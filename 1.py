@@ -21,7 +21,7 @@ def draw(screen):
 
 pygame.init()
 size = width, height = 1024, 768
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode(size).blit()
 
 
 while pygame.event.wait().type != pygame.QUIT:
