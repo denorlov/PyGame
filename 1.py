@@ -1,31 +1,55 @@
 import pygame as pygame
-from random import random
+
+
+WHITE_COLOR = (255, 255, 255)
+BLACK_COLOR = (0, 0, 0)
+
+bright_decrease = 30
 
 def draw(screen):
-    screen.fill((255, 255, 255))
-    font = pygame.font.Font(None, 50)
-    text = font.render("Hi buddy!", 1, (100, 100, 100))
+    screen.fill(WHITE_COLOR)
 
-    text_x = width // 2 - text.get_width() // 2
-    text_y = height // 2 - text.get_height() // 2
+    box_width = 90
 
-    pygame.draw.rect(screen, (0, 255, 0), (text_x - 10, text_y - 10, text.get_width() + 20, text.get_height() + 20))
+    clr = pygame.Color('#000080')
 
-    screen.blit(text, (text_x, text_y))
+    alternate_color = pygame.Color(0, 0, 0, 0)
+    alternate_color.hsva = (clr.hsva[0], clr.hsva[1], clr.hsva[2] - bright_decrease, clr.hsva[3])
 
-    screen.fill((0, 255, 0), (10, 10, 300, 300))
+    for i in range(8):
+        for j in range(8):
+            rect = ((i * box_width) + 2, (j * box_width) + 2, box_width - 4, box_width - 4)
+            if (i + j) % 2:
+                pygame.draw.rect(screen, clr, rect)
+            else:
+                pygame.draw.rect(screen, alternate_color, rect)
 
-    for i in range(10000):
-        coords = (random() * width, random() * height, 3, 3)
-        screen.fill((255, 255, 255), coords)
+
+def fade_out(screen):
+    surface = pygame.Surface((screen.get_width(), screen.get_height()))
+    surface.fill((0, 0, 255))
+
+    for alpha in range(0, 300):
+        surface.set_alpha(alpha)
+        draw(screen)
+        screen.blit(surface, (0, 0))
+        pygame.display.flip()
+
 
 pygame.init()
+
 size = width, height = 1024, 768
-screen = pygame.display.set_mode(size).blit()
+screen = pygame.display.set_mode((width, height))
 
+event = pygame.event.wait()
+while event.type != pygame.QUIT:
+    if event.type == pygame.MOUSEBUTTONUP:
+        bright_decrease += 5
+    elif event.type == pygame.KEYUP:
+        fade_out(screen)
 
-while pygame.event.wait().type != pygame.QUIT:
     draw(screen)
     pygame.display.flip()
+    event = pygame.event.wait()
 
 pygame.quit()
