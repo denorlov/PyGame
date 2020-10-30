@@ -6,7 +6,16 @@ clock = pygame.time.Clock()
 
 running = True
 x_pos = 0
-v = 20  # пикселей в секунду
+v = 60  # пикселей в секунду
+
+def draw():
+    global x_pos
+    screen.fill((0, 0, 0))
+    pygame.draw.circle(screen, (255, 0, 0), (int(x_pos), 200), 20)
+    t = clock.tick()  # в миллисекундах
+    x_pos += v * t / 1000  # v * t в секундах
+
+
 while running:
     # внутри игрового цикл еще один цикл
     # приема и обработки сообщений
@@ -16,10 +25,7 @@ while running:
             running = False
 
     # отрисовка и изменение свойств объектов
-    # ...
-    screen.fill((0, 0, 0))
-    pygame.draw.circle(screen, (255, 0, 0), (int(x_pos), 200), 20)
-    x_pos += v * clock.tick() / 1000  # v * t в секундах
+    draw()
 
     # обновление экрана
     pygame.display.flip()

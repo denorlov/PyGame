@@ -9,6 +9,14 @@ x_pos = 0
 v = 20  # пикселей в секунду
 fps = 60
 
+def draw(screen):
+    global x_pos
+
+    screen.fill((0, 0, 0))
+    pygame.draw.circle(screen, (255, 0, 0), (int(x_pos), 200), 20)
+    x_pos += v / fps
+
+
 while running:
     # внутри игрового цикл еще один цикл
     # приема и обработки сообщений
@@ -18,10 +26,9 @@ while running:
             running = False
 
     # отрисовка и изменение свойств объектов
-    # ...
-    screen.fill((0, 0, 0))
-    pygame.draw.circle(screen, (255, 0, 0), (int(x_pos), 200), 20)
-    x_pos += v / fps
+    draw(screen)
+
+    # пауза на 1 / fps cek
     clock.tick(fps)
 
     # обновление экрана
