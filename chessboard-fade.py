@@ -13,15 +13,15 @@ COLOR = DARK_GREEN
 COLOR2 = pygame.Color(0, 0, 0, 0)
 COLOR2.hsla = (COLOR.hsla[0], COLOR.hsla[1], COLOR.hsla[2] - 20, COLOR.hsla[3])
 
-BOX_WIDHT = 80
+box_widht = 80
 
-def draw(screen):
+def draw_board(screen):
     screen.fill(BLACK_COLOR)
 
     pygame.draw.rect(
         screen,
         WHITE_COLOR,
-        (X_START - 9, Y_START - 9 , BOX_WIDHT * 8, BOX_WIDHT * 8),
+        (X_START - 9, Y_START - 9 , box_widht * 8, box_widht * 8),
         2
     )
 
@@ -35,33 +35,41 @@ def draw(screen):
             pygame.draw.rect(
                 screen,
                 color,
-                (i * (BOX_WIDHT - 2) + X_START, j * (BOX_WIDHT - 2) + Y_START, BOX_WIDHT - 4, BOX_WIDHT - 4)
+                (i * (box_widht - 2) + X_START, j * (box_widht - 2) + Y_START, box_widht - 4, box_widht - 4)
             )
 
-def fade(screen):
+def fade_in(screen):
     fade_surface = pygame.Surface((screen.get_width(), screen.get_height()))
-    fade_surface.fill((0, 255, 0))
-    for alpha in range(0, 300):
+    fade_surface.fill((0, 0, 0))
+    for alpha in range(299, 1, -1):
         fade_surface.set_alpha(alpha)
-        draw(screen)
+        draw_board(screen)
         screen.blit(fade_surface, (0,0))
         pygame.display.flip()
 
-
-pygame.init()
 size = width, height = 1024, 768
-screen = pygame.display.set_mode(size)
 
-event = pygame.event.wait()
-while event.type != pygame.QUIT:
-    if event.type == pygame.MOUSEBUTTONUP:
-        fade(screen)
-    elif event.type == pygame.KEYUP:
-        BOX_WIDHT -= 5
+def main():
+    global box_widht
 
-    draw(screen)
+    pygame.init()
+    screen = pygame.display.set_mode(size)
 
-    pygame.display.flip()
+    fade_in(screen)
+
     event = pygame.event.wait()
+    while event.type != pygame.QUIT:
+        if event.type == pygame.MOUSEBUTTONUP:
+            box_widht += 5
+        elif event.type == pygame.KEYUP:
+            box_widht -= 5
 
-pygame.quit()
+        draw_board(screen)
+
+        pygame.display.flip()
+        event = pygame.event.wait()
+
+    pygame.quit()
+
+
+main()
