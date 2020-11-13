@@ -7,7 +7,10 @@ x_pos = 0
 
 def draw(screen):
     screen.fill((0, 0, 0))
-    pygame.draw.circle(screen, (255, 0, 0), (x_pos, 200), 20)
+    pygame.draw.circle(screen, (255, 0, 0), (x_pos, 100), 20)
+    pygame.draw.circle(screen, (0, 255, 0), (x_pos * 3, 150), 20)
+    pygame.draw.circle(screen, (0, 0, 255), (x_pos * 5, 200), 20)
+
 
 
 while pygame.event.wait().type != pygame.QUIT:

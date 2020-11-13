@@ -1,10 +1,10 @@
-import pygame as pygame
-
+import pygame
 
 WHITE_COLOR = (255, 255, 255)
 BLACK_COLOR = (0, 0, 0)
 
 bright_decrease = 30
+
 
 def draw(screen):
     screen.fill(WHITE_COLOR)

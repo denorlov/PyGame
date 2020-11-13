@@ -38,16 +38,20 @@ def draw_board(screen):
                 (i * (box_widht - 2) + X_START, j * (box_widht - 2) + Y_START, box_widht - 4, box_widht - 4)
             )
 
+
 def fade_in(screen):
     fade_surface = pygame.Surface((screen.get_width(), screen.get_height()))
-    fade_surface.fill((0, 0, 0))
+    fade_surface.fill(BLACK_COLOR)
+
     for alpha in range(299, 1, -1):
         fade_surface.set_alpha(alpha)
         draw_board(screen)
         screen.blit(fade_surface, (0,0))
         pygame.display.flip()
 
+
 size = width, height = 1024, 768
+
 
 def main():
     global box_widht

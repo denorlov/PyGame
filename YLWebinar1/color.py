@@ -11,6 +11,7 @@ def draw_square():
     # рисуем сам объект
     pygame.draw.rect(screen, color, (10, 10, 100, 100), 0)
 
+
 size = width, height = (400, 300)
 screen = pygame.display.set_mode(size)
 pygame.init()
