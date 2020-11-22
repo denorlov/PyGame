@@ -21,6 +21,8 @@ def init():
     for i in range(10000):
         stars.append((random.randint(0 - worldsize, worldsize), random.randint(0 - worldsize, worldsize), random.randint(1, worldsize)))
 
+    print(stars)
+
 
 def draw(screen):
     global p
@@ -28,7 +30,7 @@ def draw(screen):
     for i in stars:
         color = (i[2] % 255, i[2] % 255, i[2] % 255)
         if i[2] != 0:
-            pygame.draw.circle(screen, color, ((i[0] // (i[2] // 100 + 1) // (abs(i[1] // 200) + 1)) + WIDTH // 2, (i[1] // (i[2] // 200 + 1) // (abs(i[0] // 100) + 1)) + HEIGHT // 2), 0)
+            pygame.draw.circle(screen, color, 100 / i[2] * i[1] + WIDTH // 2, 100 / i[2] * i[0] + HEIGHT // 2, 1)
     # for i in range(len(stars)):
     #     print(stars[i][0])
     #     stars[i][0] += 1

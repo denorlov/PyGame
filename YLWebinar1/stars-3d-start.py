@@ -1,3 +1,4 @@
+from math import cos, sin
 from random import randint
 import pygame
 from pygame.font import Font
@@ -28,7 +29,8 @@ clock = pygame.time.Clock()
 
 mouse_x, mouse_y = 0, 0
 
-speed = 0
+speed = 1
+speed_of_roll = 1
 stars = []
 
 def init():
@@ -48,13 +50,23 @@ def init():
 def to_center(x, y):
     return x + SCR_CENTER_X, y + SCR_CENTER_Y
 
+def projection(x, y, z):
+    screen_x = 200 / z * x
+    screen_y = 200 / z * y
+    return screen_x, screen_y
+
+def rotation(x, y, angel):
+    x1 = x * cos(angel) - y * sin(angel)
+    y1 = x * sin(angel) + y * cos(angel)
+    return x1, y1
+
+
 def draw(screen):
     screen.fill(BLACK_COLOR)
 
     for star_xyz in stars:
         x, y, z = star_xyz
-        screen_x, screen_y = to_center(100 / z * x, 100 / z * y)
-        #screen_x, screen_y = to_center(x, y)
+        screen_x, screen_y = to_center(*projection(x, y, z))
 
         color = pygame.color.Color(0, 0, 0)
         v = 100 * (1 - (z / WORLD_SIZE))
@@ -70,21 +82,25 @@ def draw(screen):
     pygame.draw.line(screen, WHITE, to_center(0, -20), to_center(0, +20), 2)
     pygame.draw.line(screen, WHITE, to_center(-20, 0), to_center(+20, 0), 2)
 
-    text_surf = font.render(f"speed: {speed}", 1, WHITE)
+    text_surf = font.render(f"speed: {speed}, speed_of_roll: {speed_of_roll}", 1, WHITE)
     screen.blit(text_surf, (5, 5))
 
 
 def update():
     global speed
+    global speed_of_roll
 
     speed = (SCR_CENTER_Y - mouse_y) / 50
+    speed_of_roll = (SCR_CENTER_X - mouse_x) / 50000
 
     for i in range(len(stars)):
         x, y, z = stars[i]
         z = z - speed
         if z < 1:
             z = WORLD_SIZE
+        x, y = rotation(x, y, speed_of_roll)
         stars[i] = x, y, z
+
 
 
 init()
