@@ -42,6 +42,8 @@ def init():
     pygame.init()
     font = Font(None, 24)
 
+    pygame.mixer.music.load('eduard-artemev-polet.mp3')
+    pygame.mixer.music.play()
 
     for i in range(7000):
         x = randint(-WORLD_SIZE, WORLD_SIZE)
