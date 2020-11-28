@@ -24,7 +24,6 @@ clock = pygame.time.Clock()
 FPS = 60
 
 stars = []
-stars_prev = []
 
 
 def init():
@@ -38,7 +37,6 @@ def init():
                   randint(-WORLD_SIZE, WORLD_SIZE), \
                   randint(1, WORLD_SIZE)
         stars.append((x, y, z))
-        stars_prev.append((x, y, z))
 
 
 def perspective_transform(x, y, z):
@@ -62,7 +60,6 @@ def draw(screen):
 
     for i in range(len(stars)):
         star_xyz = stars[i]
-        prev_star_xyz = stars_prev[i]
 
         color = pygame.color.Color(0, 0, 0)
         v = 100 * (1 - (star_xyz[2] / WORLD_SIZE))
@@ -71,13 +68,7 @@ def draw(screen):
         color.hsva = BASE_COLOR_H, BASE_COLOR_S, v, BASE_COLOR_A
 
         star_screen_x, star_screen_y = to_center(*perspective_transform(*star_xyz))
-        prev_star_screen_x, prev_star_screen_y = to_center(*perspective_transform(*prev_star_xyz))
-
-        #pygame.draw.circle(screen, color, (int(star_screen_x), int(star_screen_y)), 2)
-        pygame.draw.line(screen, color,
-                         (int(star_screen_x), int(star_screen_y)),
-                         (int(prev_star_screen_x), int(prev_star_screen_y)),
-                         2)
+        pygame.draw.circle(screen, color, (int(star_screen_x), int(star_screen_y)), 2)
 
 
     pygame.draw.circle(screen, (255, 255, 255), to_center(0, 0), 20, 2)
@@ -104,18 +95,14 @@ def update():
     for i in range(len(stars)):
         x, y, z = stars[i]
 
-        stars_prev[i] = x, y, z
-
         x, y = rotation(x, y, angle)
         z = z - speed
 
         if z < 1:
             z = WORLD_SIZE
-            stars_prev[i] = x, y, z
 
         if z > WORLD_SIZE:
             z = 1
-            stars_prev[i] = x, y, z
 
         stars[i] = x, y, z
 

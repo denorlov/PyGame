@@ -43,7 +43,7 @@ def init():
     font = Font(None, 24)
 
     pygame.mixer.music.load('eduard-artemev-polet.mp3')
-    pygame.mixer.music.play()
+    #pygame.mixer.music.play()
 
     for i in range(7000):
         x = randint(-WORLD_SIZE, WORLD_SIZE)
@@ -56,8 +56,8 @@ def to_center(x, y):
     return x + SCR_CENTER_X, y + SCR_CENTER_Y
 
 def projection(x, y, z):
-    screen_x = 200 / z * x
-    screen_y = 200 / z * y
+    screen_x = 50 / z * x
+    screen_y = 50 / z * y
     return screen_x, screen_y
 
 def rotation(x, y, angel):
