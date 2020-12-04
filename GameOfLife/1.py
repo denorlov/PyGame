@@ -10,11 +10,12 @@ WHITE_COLOR = pygame.Color('white')
 GRAY_COLOR = pygame.Color('dimgray')
 DARK_GREEN_COLOR = pygame.Color('forestgreen')
 GREEN_COLOR = pygame.Color('green')
+RED_COLOR = pygame.Color('red')
 
 FPS = 30
 
 TILE = 10
-W_TILES, H_TILES = 200, 150
+W_TILES, H_TILES = 150, 100
 
 SCREEN_SIZE = WIDTH, HEIGHT = W_TILES * TILE, H_TILES * TILE
 
@@ -26,7 +27,8 @@ next_cells = [[0 for _ in range(WIDTH // TILE)] for _ in range(H_TILES)]
 
 # control flags
 next_turn = False
-dont_wait_key_to_draw = False
+play_mode = False
+mouse_x, mouse_y = 0, 0
 
 def check_cell(cells, x, y):
     count = 0
@@ -51,7 +53,7 @@ def check_cell(cells, x, y):
 def update():
     global cells, next_turn
 
-    if next_turn or dont_wait_key_to_draw:
+    if next_turn or play_mode:
         for x in range(1, W_TILES - 1):
             for y in range(1, H_TILES - 1):
                 next_cells[y][x] = check_cell(cells, x, y)
@@ -83,9 +85,15 @@ def draw(screen):
         pygame.draw.line(screen, GRAY_COLOR, (0, y), (WIDTH, y))
 
     # debug text
-    text_surface = font.render(f"fps: {int(clock.get_fps())}", 1, WHITE_COLOR)
+    text_surface = font.render(f"fps: {int(clock.get_fps())}, mouse: {mouse_x}, {mouse_y}", 1, WHITE_COLOR)
     screen.blit(text_surface, (5, 5))
 
+    # cursor
+    pygame.draw.rect(
+        screen, RED_COLOR,
+        (mouse_x - (mouse_x % TILE) + 2, mouse_y - (mouse_y % TILE) + 2, TILE - 2, TILE - 2),
+        0
+    )
 
 
 pygame.init()
@@ -100,14 +108,22 @@ while is_running:
         if event.type == pygame.QUIT:
             is_running = False
         elif event.type == pygame.MOUSEBUTTONUP:
-            next_turn = True
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                dont_wait_key_to_draw = True
+            x = mouse_x // TILE
+            y = mouse_y // TILE
+            if cells[y][x]:
+                cells[y][x] = False
+            else:
+                cells[y][x] = True
+        elif event.type == pygame.MOUSEMOTION:
+            mouse_x, mouse_y = event.pos
         elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
+                next_turn = True
             if event.key == pygame.K_SPACE:
-                dont_wait_key_to_draw = False
-
+                if play_mode:
+                    play_mode = False
+                else:
+                    play_mode = True
 
     draw(screen)
     pygame.display.flip()
