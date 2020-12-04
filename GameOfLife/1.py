@@ -85,7 +85,7 @@ def draw(screen):
         pygame.draw.line(screen, GRAY_COLOR, (0, y), (WIDTH, y))
 
     # debug text
-    text_surface = font.render(f"fps: {int(clock.get_fps())}, mouse: {mouse_x}, {mouse_y}", 1, WHITE_COLOR)
+    text_surface = font.render(f"fps: {int(clock.get_fps())}, mouse: {mouse_x}, {mouse_y}, play: {play_mode}, ", 1, WHITE_COLOR)
     screen.blit(text_surface, (5, 5))
 
     # cursor
