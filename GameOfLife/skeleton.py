@@ -14,10 +14,12 @@ RED_COLOR = pygame.Color('red')
 FPS = 30
 
 TILE = 10
-WIDTH, HEIGHT = 50, 50
+WIDTH, HEIGHT = 150, 50
 
-cells = [[randint(0, 1) for _ in range(WIDTH)] for _ in range(HEIGHT)]
 cells_next = [[0 for _ in range(WIDTH)] for _ in range(HEIGHT)]
+
+#cells = [[randint(0, 1) for _ in range(WIDTH)] for _ in range(HEIGHT)]
+cells = [[0 if x % 33 else 1 for x in range(WIDTH)] for y in range(HEIGHT)]
 #cells = [[1 for i in range(WIDTH)] for j in range(HEIGHT)]
 
 next_turn = False
