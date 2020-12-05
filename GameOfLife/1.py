@@ -15,14 +15,14 @@ RED_COLOR = pygame.Color('red')
 FPS = 30
 
 TILE = 10
-W_TILES, H_TILES = 150, 100
+W_TILES, H_TILES = 110, 60
 
 SCREEN_SIZE = WIDTH, HEIGHT = W_TILES * TILE, H_TILES * TILE
 
 # world state
-#cells = [[randint(0, 1) for i in range(WIDTH // TILE)] for j in range(H_TILES)]
+cells = [[randint(0, 1) for i in range(WIDTH // TILE)] for j in range(H_TILES)]
 #cells = [[0 if i % 5 else 1 for i in range(WIDTH // TILE)] for j in range(H_TILES)]
-cells = [[1 if i == WIDTH / TILE // 2 else 0 for i in range(WIDTH // TILE)] for j in range(H_TILES)]
+#cells = [[1 if i == WIDTH / TILE // 2 else 0 for i in range(WIDTH // TILE)] for j in range(H_TILES)]
 next_cells = [[0 for _ in range(WIDTH // TILE)] for _ in range(H_TILES)]
 
 # control flags
