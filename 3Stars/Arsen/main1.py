@@ -42,6 +42,7 @@ def init():
         stars_positions.append((x, y, z))
         old_stars_positions.append((x, y, z))
 
+    pygame.mixer.init()
     pygame.mixer.music.load('eduard-artemev-polet.mp3')
     pygame.mixer.music.play()
 
