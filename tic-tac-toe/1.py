@@ -26,6 +26,7 @@ turn = "x" # 'x' player or 'o' player
 mouse_x, mouse_y = 0, 0
 winner = "" # 'x' player or 'o' player
 
+
 def check_winner():
     for x in range(0, W_TILES - CELLS_IN_ROW_TO_WIN):
         for y in range(0, H_TILES - CELLS_IN_ROW_TO_WIN):
