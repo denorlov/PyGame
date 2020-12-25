@@ -29,7 +29,9 @@ snake = [(1, 1), (1, 2), (1, 3)]
 direction = (0, 1)
 
 # list of x, y
-apples = [(10, 10), (15, 15)]
+rabbits = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
+plants = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
+crystals = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 
 def update():
     global snake
@@ -37,16 +39,16 @@ def update():
 
     head = (snake[0][0] + direction[0], snake[0][1] + direction[1])
 
-    eat_apple = False
-    for i in range(len(apples)):
+    eat = False
+    for i in range(len(rabbits)):
         # eat apple
-        if apples[i][0] == head[0] and apples[i][1] == head[1]:
-            del apples[i]
-            apples.append((randint(0, W_TILES),randint(0, H_TILES)))
-            eat_apple = True
+        if rabbits[i][0] == head[0] and rabbits[i][1] == head[1]:
+            del rabbits[i]
+            rabbits.append((randint(0, W_TILES),randint(0, H_TILES)))
+            eat = True
             break
 
-    if eat_apple:
+    if eat:
         snake = [head] + snake[:]
     else:
         snake = [head] + snake[:-1]
@@ -63,16 +65,17 @@ def draw(screen):
             0
         )
 
-    for i in range(len(apples)):
-        x, y = apples[i]
+    for i in range(len(rabbits)):
+        x, y = rabbits[i]
+        screen.blit(bunny_image, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
 
-        # pygame.draw.rect(
-        #     screen, RED_COLOR,
-        #     ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1),
-        #     0
-        # )
-        screen.blit(apple_image, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
+    for i in range(len(plants)):
+        x, y = plants[i]
+        screen.blit(plant_img, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
 
+    for i in range(len(crystals)):
+        x, y = crystals[i]
+        screen.blit(crystal_img, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
 
     # vertical lines
     for x in range(0, WIDTH, TILE):
@@ -91,8 +94,10 @@ pygame.init()
 pygame.display.set_caption("Змея")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = Font(None, 24)
-apple_image = pygame.image.load("apple.png").convert_alpha()
-#bunny_image = pygame.image.load("bunny.png").convert_alpha()
+#apple_image = pygame.image.load("apple.png").convert_alpha()
+bunny_image = pygame.image.load("bunny.png").convert_alpha()
+plant_img = pygame.image.load("plant.png").convert_alpha()
+crystal_img = pygame.image.load("crystal.png").convert_alpha()
 clock = pygame.time.Clock()
 
 is_running = True
