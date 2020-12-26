@@ -13,8 +13,8 @@ RED_COLOR = pygame.Color('red')
 
 FPS = 7
 
-TILE = 30
-W_TILES, H_TILES = 40, 20
+TILE = 50
+W_TILES, H_TILES = 25, 15
 
 SCREEN_SIZE = WIDTH, HEIGHT = W_TILES * TILE, H_TILES * TILE
 
@@ -32,6 +32,7 @@ direction = (0, 1)
 rabbits = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 plants = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 crystals = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
+rocks = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 
 def update():
     global snake
@@ -77,6 +78,11 @@ def draw(screen):
         x, y = crystals[i]
         screen.blit(crystal_img, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
 
+    for i in range(len(rocks)):
+        x, y = rocks[i]
+        screen.blit(rock_img, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
+
+
     # vertical lines
     for x in range(0, WIDTH, TILE):
         pygame.draw.line(screen, GRAY_COLOR, (x, 0), (x, HEIGHT))
@@ -94,10 +100,12 @@ pygame.init()
 pygame.display.set_caption("Змея")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = Font(None, 24)
-#apple_image = pygame.image.load("apple.png").convert_alpha()
-bunny_image = pygame.image.load("bunny.png").convert_alpha()
-plant_img = pygame.image.load("plant.png").convert_alpha()
-crystal_img = pygame.image.load("crystal.png").convert_alpha()
+
+bunny_image = pygame.image.load("bunny.png")
+plant_img = pygame.image.load("plant.png")
+crystal_img = pygame.image.load("crystal.png")
+rock_img = pygame.image.load("rock.png")
+
 clock = pygame.time.Clock()
 
 is_running = True
