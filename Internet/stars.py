@@ -49,16 +49,16 @@ def draw():
     for star in stars:
         b = star.brightness
         color = (b, b, b)  # a grey
-        screen.draw.line(star.end_pos, star.pos, color)
+        screen.do.line(star.end_pos, star.pos, color)
 
     # Head-up-display
-    screen.draw.text(
+    screen.do.text(
         "||| Warp {:0.1f} |||".format(warp_factor),
         fontsize=40,
         midbottom=(WIDTH // 2, HEIGHT - 40),
         color=(180, 160, 0),
     )
-    screen.draw.text(
+    screen.do.text(
         "Hold SPACE to accelerate",
         fontsize=30,
         midbottom=(WIDTH // 2, HEIGHT - 8),
