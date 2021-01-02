@@ -3,7 +3,7 @@ import sys
 
 import pygame
 
-SCR_RECT = pygame.Rect(0, 0, 1270, 500)
+SCR_RECT = pygame.Rect(0, 0, 1270, 480)
 FPS = 60
 MAX_REGENERATE_TIME = FPS // 1.5
 
@@ -95,6 +95,9 @@ class Scene:
 pygame.init()
 screen = pygame.display.set_mode(SCR_RECT.size)
 scene = Scene(screen, pygame.image.load("2021.png").convert())
+
+pygame.mixer.music.load('bells.mp3')
+pygame.mixer.music.play(loops=3)
 
 runnning = True
 while runnning:
