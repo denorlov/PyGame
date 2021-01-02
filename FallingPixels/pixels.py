@@ -97,7 +97,7 @@ screen = pygame.display.set_mode(SCR_RECT.size)
 scene = Scene(screen, pygame.image.load("2021.png").convert())
 
 pygame.mixer.music.load('bells.mp3')
-pygame.mixer.music.play(loops=3)
+pygame.mixer.music.play(loops=2)
 
 runnning = True
 while runnning:
