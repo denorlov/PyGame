@@ -30,13 +30,9 @@ direction = (0, 1)
 
 # list of x, y
 rabbits = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
-plants = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
-crystals = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
-rocks = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 
 def update():
     global snake
-    global apples
 
     head = (snake[0][0] + direction[0], snake[0][1] + direction[1])
 
@@ -68,20 +64,11 @@ def draw(screen):
 
     for i in range(len(rabbits)):
         x, y = rabbits[i]
-        screen.blit(bunny_image, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
-
-    for i in range(len(plants)):
-        x, y = plants[i]
-        screen.blit(plant_img, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
-
-    for i in range(len(crystals)):
-        x, y = crystals[i]
-        screen.blit(crystal_img, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
-
-    for i in range(len(rocks)):
-        x, y = rocks[i]
-        screen.blit(rock_img, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
-
+        pygame.draw.rect(
+            screen, RED_COLOR,
+            ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1),
+            0
+        )
 
     # vertical lines
     for x in range(0, WIDTH, TILE):
@@ -100,11 +87,6 @@ pygame.init()
 pygame.display.set_caption("Змея")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = Font(None, 24)
-
-bunny_image = pygame.image.load("bunny.png")
-plant_img = pygame.image.load("plant.png")
-crystal_img = pygame.image.load("crystal.png")
-rock_img = pygame.image.load("rock.png")
 
 clock = pygame.time.Clock()
 
