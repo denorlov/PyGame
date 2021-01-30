@@ -9,17 +9,22 @@ DARK_GREEN_COLOR = pygame.Color('forestgreen')
 GREEN_COLOR = pygame.Color('green')
 RED_COLOR = pygame.Color('red')
 
-SCREEN_SIZE = WIDTH, HEIGHT = 800, 600
+FPS = 7
 
 pygame.init()
-pygame.display.set_caption("Заставка")
-screen = pygame.display.set_mode(SCREEN_SIZE)
 
-intro_image = pygame.image.load("Images/python_intro_img.jpg")
-start_x = -intro_image.get_width()
-speed = 25 # pixels per sec
+pygame.display.set_caption("Картинка")
+
+image = pygame.image.load("Images/python_intro_img.jpg")
+
+screen_size = (width, height) = (image.get_width(), image.get_height())
+screen = pygame.display.set_mode(screen_size)
+
+font = Font(None, 24)
 
 clock = pygame.time.Clock()
+
+y_pos = -screen_size[1]
 
 is_running = True
 while is_running:
@@ -27,15 +32,13 @@ while is_running:
         if event.type == pygame.QUIT:
             is_running = False
 
-    time_delta_ms = clock.get_time()
-    dx = time_delta_ms * speed // 100
-    start_x = start_x + dx
+    screen.fill(BLACK_COLOR)
 
-    if start_x > 0:
-        start_x = 0
+    if y_pos < 0:
+        screen.blit(image, (0, y_pos))
+        y_pos += 3
+        pygame.display.flip()
 
-    screen.blit(intro_image, (start_x, 0))
-    pygame.display.flip()
-    clock.tick(120)
+    clock.tick(60)
 
 pygame.quit()

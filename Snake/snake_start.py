@@ -22,7 +22,10 @@ SCREEN_SIZE = (WIDTH, HEIGHT) = (W_TILES * TILE, H_TILES * TILE)
 snake = [(5,5), (5,6), (5,7)]
 direction = (0, 1)
 
-apples = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(10)]
+bunnies = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(10)]
+plants = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(10)]
+ice = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(10)]
+rock = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(10)]
 
 def draw(screen):
     screen.fill(BLACK_COLOR)
@@ -36,14 +39,24 @@ def draw(screen):
             (x_screen, y_screen, TILE, TILE)
         )
 
-    for x_cells, y_cells in apples:
+    for x_cells, y_cells in bunnies:
         x_screen = (x_cells) * TILE
         y_screen = (y_cells) * TILE
 
-        pygame.draw.rect(
-            screen, RED_COLOR,
-            (x_screen, y_screen, TILE, TILE)
-        )
+        screen.blit(bunny_image, (x_screen, y_screen, TILE, TILE))
+
+    for x_cells, y_cells in plants:
+        x_screen = (x_cells) * TILE
+        y_screen = (y_cells) * TILE
+
+        screen.blit(plant_image, (x_screen, y_screen, TILE, TILE))
+
+    for x_cells, y_cells in ice:
+        screen.blit(ice_image, (x_cells * TILE, y_cells * TILE, TILE, TILE))
+
+    for x_cells, y_cells in rock:
+        screen.blit(rock_image, (x_cells * TILE, y_cells * TILE, TILE, TILE))
+
 
     screen.blit(
         bunny_image,
@@ -67,7 +80,11 @@ pygame.init()
 pygame.display.set_caption("Змея")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = Font(None, 24)
+
 bunny_image = pygame.image.load("bunny.png")
+plant_image = pygame.image.load("plant.png")
+ice_image = pygame.image.load("crystal.png")
+rock_image = pygame.image.load("rock.png")
 
 clock = pygame.time.Clock()
 

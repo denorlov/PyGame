@@ -5,8 +5,9 @@ vec = pgame.math.Vector2
 
 WIDTH = 1024
 HEIGHT = 800
+
 TILESIZE = 32
-GRIDSIZE = 32
+GRIDSIZE = 64
 
 FPS = 60
 
@@ -44,14 +45,16 @@ def draw_grid():
 
 def draw_mobs(screen, mobs):
     for position, velocity in mobs:
-        rect = pgame.Rect(position[0], position[1], MOB_SIZE, MOB_SIZE)
+        rect = pgame.Rect(position.x, position.y, MOB_SIZE, MOB_SIZE)
         pgame.draw.rect(screen, RED, rect, 2)
 
 def update_mobs(mobs):
     for n, position_velocity in enumerate(mobs):
         position, velocity = position_velocity
+
         new_position = position + velocity
         mobs[n][0] = new_position
+
         new_velocity = velocity
         if new_position.x > WIDTH or new_position.x < 0:
             new_velocity.x *= -1
@@ -59,7 +62,11 @@ def update_mobs(mobs):
             new_velocity.y *= -1
         mobs[n][1] = new_velocity
 
-mobs = [[vec(randint(0, WIDTH), randint(0, HEIGHT)), vec(2, 0).rotate(randint(0, 360))] for n in range(NUM_MOBS)]
+# position, velocity
+mobs = [
+    [vec(randint(0, WIDTH), randint(0, HEIGHT)), vec(2, 0).rotate(randint(0, 360))]
+    for n in range(NUM_MOBS)
+]
 
 # Game loop
 running = True
