@@ -12,7 +12,7 @@ GRIDSIZE = 64
 FPS = 60
 
 MOB_SIZE = 10
-NUM_MOBS = 100
+NUM_MOBS = 300
 
 # define colors
 WHITE = (255, 255, 255)
@@ -44,28 +44,45 @@ def draw_grid():
         pgame.draw.line(screen, LIGHTGREY, (0, y), (WIDTH, y))
 
 def draw_mobs(screen, mobs):
-    for position, velocity in mobs:
-        rect = pgame.Rect(position.x, position.y, MOB_SIZE, MOB_SIZE)
-        pgame.draw.rect(screen, RED, rect, 2)
+    for mob in mobs:
+        rect = pgame.Rect(mob["pos"], (MOB_SIZE, MOB_SIZE))
+        color = RED if mob["collisions"] else GREEN
+        pgame.draw.rect(screen, color, rect, 2)
+
+def check_collisions(mobs):
+    for mob in mobs:
+        mob["collisions"].clear()
+
+        for n, other_mob in enumerate(mobs):
+            if mob == other_mob:
+                continue
+
+            rec1 = pgame.Rect(mob["pos"], (MOB_SIZE, MOB_SIZE))
+            rec2 = pgame.Rect(other_mob["pos"], (MOB_SIZE, MOB_SIZE))
+            if rec1.colliderect(rec2):
+                mob["collisions"].append(n)
 
 def update_mobs(mobs):
-    for n, position_velocity in enumerate(mobs):
-        position, velocity = position_velocity
+    for n, mob in enumerate(mobs):
+        position, velocity = mob["pos"], mob["vel"]
 
         new_position = position + velocity
-        mobs[n][0] = new_position
+        mobs[n]["pos"] = new_position
 
         new_velocity = velocity
         if new_position.x > WIDTH or new_position.x < 0:
             new_velocity.x *= -1
         if new_position.y < 0 or new_position.y > HEIGHT:
             new_velocity.y *= -1
-        mobs[n][1] = new_velocity
+        mobs[n]["vel"] = new_velocity
 
 # position, velocity
 mobs = [
-    [vec(randint(0, WIDTH), randint(0, HEIGHT)), vec(2, 0).rotate(randint(0, 360))]
-    for n in range(NUM_MOBS)
+    {
+        "pos": vec(randint(0, WIDTH), randint(0, HEIGHT)),
+        "vel": vec(2, 0).rotate(randint(0, 360)),
+        "collisions": []
+    } for n in range(NUM_MOBS)
 ]
 
 # Game loop
@@ -80,6 +97,8 @@ while running:
 
     # Update
     update_mobs(mobs)
+    check_collisions(mobs)
+
     # Draw / render
     screen.fill(BLACK)
     draw_grid()
