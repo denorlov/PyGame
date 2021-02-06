@@ -1,3 +1,4 @@
+from sprite_imgs import *
 from random import randint
 
 import pygame as pygame
@@ -57,14 +58,67 @@ def update():
 def draw(screen):
     screen.fill(BLACK_COLOR)
 
+    screen.blit(snake_mid_vertical_img, (0, TILE, TILE, TILE))
+    screen.blit(snake_mid_horizontal_img, (0, 2 * TILE, TILE, TILE))
+
     for i in range(len(snake)):
         x,y = snake[i]
 
-        pygame.draw.rect(
-            screen, GREEN_COLOR,
-            ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1),
-            0
-        )
+        if i == 0:
+            # определяем направление головы
+            snake_head_img = snake_head_down_img
+            x1, y1 = snake[i + 1]
+
+            if x == x1:
+                if y > y1:
+                    snake_head_img = snake_head_down_img
+                else:
+                    snake_head_img = snake_head_up_img
+            else: # y == y1
+                if x > x1:
+                    snake_head_img = snake_head_right_img
+                else:
+                    snake_head_img = snake_head_left_img
+
+            screen.blit(
+                snake_head_img,
+                ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1)
+            )
+        elif i == len(snake) - 1:
+            # определяем направление хвоста
+            xPrev, yPrev = snake[i - 1]
+
+            if x == xPrev:
+                if y > yPrev:
+                    snake_tail_img = snake_tail_up_img
+                else:
+                    snake_tail_img = snake_tail_down_img
+            else: # y == yPrev
+                if x > xPrev:
+                    snake_tail_img = snake_tail_left_img
+                else:
+                    snake_tail_img = snake_tail_right_img
+
+            screen.blit(
+                snake_tail_img,
+                ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1)
+            )
+
+        else:
+            xPrev, yPrev = snake[i - 1]
+            xNext, yNext = snake[i + 1]
+
+            if xNext == x and xPrev == x:
+                snake_mid_img = snake_mid_vertical_img
+            elif yPrev == y and yNext == y:
+                snake_mid_img = snake_mid_horizontal_img
+            else:
+                snake_mid_img = snake_mid_horizontal_img
+
+            screen.blit(
+                snake_mid_img,
+                ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1)
+            )
 
     for i in range(len(rabbits)):
         x, y = rabbits[i]
@@ -100,6 +154,8 @@ pygame.init()
 pygame.display.set_caption("Змея")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = Font(None, 24)
+
+
 
 bunny_image = pygame.image.load("bunny.png")
 plant_img = pygame.image.load("plant.png")

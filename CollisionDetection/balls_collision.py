@@ -3,8 +3,8 @@ from random import randint
 
 vec = pgame.math.Vector2
 
-WIDTH = 1024
-HEIGHT = 800
+WIDTH = 1280
+HEIGHT = 720
 
 TILESIZE = 32
 GRIDSIZE = 64
