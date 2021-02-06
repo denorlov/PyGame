@@ -40,6 +40,7 @@ def draw(screen):
         x_screen = (x_cells) * TILE
         y_screen = (y_cells) * TILE
 
+        # голова
         if n == 0:
             x_cells_next, y_cells_next = snake[1]
             if y_cells == y_cells_next:
@@ -55,6 +56,7 @@ def draw(screen):
 
             screen.blit(snake_head_img, (x_screen, y_screen, TILE, TILE))
 
+        # хвост
         elif n == len(snake) - 1:
             x_cells_prev, y_cells_prev = snake[-2]
 
@@ -71,35 +73,34 @@ def draw(screen):
 
             screen.blit(snake_tail_img, (x_screen, y_screen, TILE, TILE))
 
+        # туловище
         else:
             pygame.draw.rect(
                 screen, GREEN_COLOR,
                 (x_screen, y_screen, TILE, TILE)
             )
 
+    # зайцы
     for x_cells, y_cells in bunnies:
         x_screen = (x_cells) * TILE
         y_screen = (y_cells) * TILE
 
         screen.blit(bunny_image, (x_screen, y_screen, TILE, TILE))
 
+    # деревья
     for x_cells, y_cells in plants:
         x_screen = (x_cells) * TILE
         y_screen = (y_cells) * TILE
 
         screen.blit(plant_image, (x_screen, y_screen, TILE, TILE))
 
+    # лед
     for x_cells, y_cells in ice:
         screen.blit(ice_image, (x_cells * TILE, y_cells * TILE, TILE, TILE))
 
+    # скала
     for x_cells, y_cells in rock:
         screen.blit(rock_image, (x_cells * TILE, y_cells * TILE, TILE, TILE))
-
-
-    screen.blit(
-        bunny_image,
-        (100, 100, TILE, TILE)
-    )
 
     # vertical lines
     for x in range(0, WIDTH, TILE):
