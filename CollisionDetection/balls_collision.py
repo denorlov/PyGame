@@ -12,7 +12,7 @@ GRIDSIZE = 64
 FPS = 60
 
 MOB_SIZE = 10
-NUM_MOBS = 300
+NUM_MOBS = 150
 
 # define colors
 WHITE = (255, 255, 255)
@@ -45,22 +45,8 @@ def draw_grid():
 
 def draw_mobs(screen, mobs):
     for mob in mobs:
-        rect = pgame.Rect(mob["pos"], (MOB_SIZE, MOB_SIZE))
         color = RED if mob["collisions"] else GREEN
-        pgame.draw.rect(screen, color, rect, 2)
-
-def check_collisions(mobs):
-    for mob in mobs:
-        mob["collisions"].clear()
-
-        for n, other_mob in enumerate(mobs):
-            if mob == other_mob:
-                continue
-
-            rec1 = pgame.Rect(mob["pos"], (MOB_SIZE, MOB_SIZE))
-            rec2 = pgame.Rect(other_mob["pos"], (MOB_SIZE, MOB_SIZE))
-            if rec1.colliderect(rec2):
-                mob["collisions"].append(n)
+        pgame.draw.rect(screen, color, (mob["pos"], (MOB_SIZE, MOB_SIZE)), 2)
 
 def update_mobs(mobs):
     for n, mob in enumerate(mobs):
@@ -76,6 +62,32 @@ def update_mobs(mobs):
             new_velocity.y *= -1
         mobs[n]["vel"] = new_velocity
 
+
+# про оценку сложности brute force подхода
+#
+# 100mob
+# 100 * 100 = 10_000
+
+# 200mob?
+# 199 * 200 = 200**2 = 40_000
+
+# 1000mob
+# 1000**2 = 1_000_000
+
+def check_collisions(mobs):
+    for mob in mobs: #100
+        mob["collisions"].clear()
+
+        for n, other_mob in enumerate(mobs): #99
+            if mob == other_mob:
+                continue
+
+            rec1 = pgame.Rect(mob["pos"], (MOB_SIZE, MOB_SIZE))
+            rec2 = pgame.Rect(other_mob["pos"], (MOB_SIZE, MOB_SIZE))
+            if rec1.colliderect(rec2):
+                mob["collisions"].append(n)
+
+
 # position, velocity
 mobs = [
     {
@@ -84,6 +96,7 @@ mobs = [
         "collisions": []
     } for n in range(NUM_MOBS)
 ]
+
 
 # Game loop
 running = True
