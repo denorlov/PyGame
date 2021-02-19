@@ -30,6 +30,19 @@ snake_tail_down_img = snake_img.subsurface((64 * 4, 64 + 64 * 2, 64, 64))
 snake_tail_down_img = pygame.transform.scale(snake_tail_down_img, (TILE, TILE))
 
 
+snake_mid_bottom_right_img = snake_img.subsurface((0, 0, 64, 64))
+snake_mid_bottom_right_img = pygame.transform.scale(snake_mid_bottom_right_img, (TILE, TILE))
+
+snake_mid_bottom_left_img = snake_img.subsurface((2 * 64, 0, 64, 64))
+snake_mid_bottom_left_img = pygame.transform.scale(snake_mid_bottom_left_img, (TILE, TILE))
+
+snake_mid_top_right_img = snake_img.subsurface((0, 1 * 64, 64, 64))
+snake_mid_top_right_img = pygame.transform.scale(snake_mid_top_right_img, (TILE, TILE))
+
+snake_mid_top_left_img = snake_img.subsurface((2 * 64, 2 * 64, 64, 64))
+snake_mid_top_left_img = pygame.transform.scale(snake_mid_top_left_img, (TILE, TILE))
+
+
 snake_mid_horizontal_img = snake_img.subsurface((64 * 1, 0, 64, 64))
 snake_mid_horizontal_img = pygame.transform.scale(snake_mid_horizontal_img, (TILE, TILE))
 

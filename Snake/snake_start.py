@@ -1,6 +1,7 @@
 from random import randint
 
-import pygame as pygame
+from sprt_imgs import *
+
 from pygame.font import Font
 
 BLACK_COLOR = pygame.Color('black')
@@ -13,7 +14,6 @@ RED_COLOR = pygame.Color('red')
 
 FPS = 7
 
-TILE = 50
 W_TILES, H_TILES = 25, 15
 
 SCREEN_SIZE = (WIDTH, HEIGHT) = (W_TILES * TILE, H_TILES * TILE)
@@ -119,38 +119,6 @@ pygame.init()
 pygame.display.set_caption("Змея")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = Font(None, 24)
-
-bunny_image = pygame.image.load("bunny.png")
-plant_image = pygame.image.load("plant.png")
-ice_image = pygame.image.load("crystal.png")
-rock_image = pygame.image.load("rock.png")
-
-snake_grapichs = pygame.image.load("snake-graphics.png")
-
-snake_head_up = snake_grapichs.subsurface((64 * 3, 0, 64, 64))
-snake_head_up = pygame.transform.scale(snake_head_up, (TILE, TILE))
-
-snake_head_down = snake_grapichs.subsurface((64 * 4, 64, 64, 64))
-snake_head_down = pygame.transform.scale(snake_head_down, (TILE, TILE))
-
-snake_head_right = snake_grapichs.subsurface((64 * 4, 0, 64, 64))
-snake_head_right = pygame.transform.scale(snake_head_right, (TILE, TILE))
-
-snake_head_left = snake_grapichs.subsurface((64 * 3, 64, 64, 64))
-snake_head_left = pygame.transform.scale(snake_head_left, (TILE, TILE))
-
-
-snake_tail_up = snake_grapichs.subsurface((64 * 4, 64 * 3, 64, 64))
-snake_tail_up = pygame.transform.scale(snake_tail_up, (TILE, TILE))
-
-snake_tail_down = snake_grapichs.subsurface((64 * 3, 64 * 2, 64, 64))
-snake_tail_down = pygame.transform.scale(snake_tail_down, (TILE, TILE))
-
-snake_tail_right = snake_grapichs.subsurface((64 * 3, 64 * 3, 64, 64))
-snake_tail_right = pygame.transform.scale(snake_tail_right, (TILE, TILE))
-
-snake_tail_left = snake_grapichs.subsurface((64 * 4, 64 * 2, 64, 64))
-snake_tail_left = pygame.transform.scale(snake_tail_left, (TILE, TILE))
 
 clock = pygame.time.Clock()
 
