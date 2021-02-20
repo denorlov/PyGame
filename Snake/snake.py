@@ -31,7 +31,7 @@ direction = (0, 1)
 is_in_pause = False
 
 # list of x, y
-rabbits = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
+rabbits = [(randint(0, W_TILES), randint(0, H_TILES), randint(0, len(bunny_animation_phases))) for _ in range(5)]
 plants = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 crystals = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 rocks = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
@@ -48,7 +48,7 @@ def update():
             # eat apple
             if rabbits[i][0] == head[0] and rabbits[i][1] == head[1]:
                 del rabbits[i]
-                rabbits.append((randint(0, W_TILES),randint(0, H_TILES)))
+                rabbits.append((randint(0, W_TILES),randint(0, H_TILES),randint(0, len(bunny_animation_phases))))
                 eat = True
                 break
 
@@ -147,8 +147,10 @@ def draw(screen):
             )
 
     for i in range(len(rabbits)):
-        x, y = rabbits[i]
-        screen.blit(bunny_image, ((x * TILE) + 1, (y * TILE) + 1, TILE - 1, TILE - 1))
+        x, y, rabbit_animation_phase = rabbits[i]
+        phase = (rabbit_animation_phase + animation_phase_num) % len(bunny_animation_phases)
+        bunny_image = bunny_imgs[bunny_animation_phases[phase]]
+        screen.blit(bunny_image, ((x * TILE) + 10, (y * TILE) + 10, TILE - 1, TILE - 1))
 
     for i in range(len(plants)):
         x, y = plants[i]
@@ -175,23 +177,23 @@ def draw(screen):
     text_surface = font.render(f"fps: {int(clock.get_fps())}, score: {len(snake)}", 1, WHITE_COLOR)
     screen.blit(text_surface, (5, 5))
 
-
 pygame.init()
 pygame.display.set_caption("Змея")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 font = Font(None, 24)
 
-
-
-bunny_image = pygame.image.load("bunny.png")
-plant_img = pygame.image.load("plant.png")
-crystal_img = pygame.image.load("crystal.png")
-rock_img = pygame.image.load("rock.png")
-
 clock = pygame.time.Clock()
+
+cycletime = 0
+interval = .5  # how long one single images should be displayed in seconds
+animation_phase_num = 0
 
 is_running = True
 while is_running:
+    milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
+    seconds = milliseconds / 1000.0  # seconds passed since last frame (float)
+    cycletime += seconds
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
@@ -212,8 +214,15 @@ while is_running:
                 is_in_pause = not is_in_pause
 
     update()
+
+    if cycletime > interval:
+        cycletime = 0
+
+        animation_phase_num += 1
+        if animation_phase_num >= len(bunny_animation_phases):
+            animation_phase_num = 0
+
     draw(screen)
     pygame.display.flip()
-    clock.tick(FPS)
 
 pygame.quit()
