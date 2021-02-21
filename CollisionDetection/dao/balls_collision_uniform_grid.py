@@ -6,8 +6,7 @@ vec = pgame.math.Vector2
 WIDTH = 1280
 HEIGHT = 720
 
-TILESIZE = 32
-GRIDSIZE = 64
+GRIDSIZE = 32 // 8
 
 FPS = 60
 
@@ -48,44 +47,60 @@ def draw_mobs(screen, mobs):
         color = RED if mob["collisions"] else GREEN
         pgame.draw.rect(screen, color, (mob["pos"], (MOB_SIZE, MOB_SIZE)), 2)
 
+uniform_grid = []
+
 def update_mobs(mobs):
+    global uniform_grid
+
+    uniform_grid = [[[]] * (WIDTH // GRIDSIZE + 1) for i in range(HEIGHT // GRIDSIZE + 1)]
     for n, mob in enumerate(mobs):
         position, velocity = mob["pos"], mob["vel"]
 
         new_position = position + velocity
-        mobs[n]["pos"] = new_position
 
         new_velocity = velocity
         if new_position.x > WIDTH or new_position.x < 0:
             new_velocity.x *= -1
         if new_position.y < 0 or new_position.y > HEIGHT:
             new_velocity.y *= -1
+
+        new_position = position + velocity
+
         mobs[n]["vel"] = new_velocity
+        mobs[n]["pos"] = new_position
 
+        x_cell = int(new_position.x // GRIDSIZE)
+        y_cell = int(new_position.y // GRIDSIZE)
+        uniform_grid[y_cell][x_cell].append(mob)
 
-# про оценку сложности brute force подхода
+# про оценку сложности uniform grid
 #
 # 100mob
-# 100 * 100 = 10_000
+# ?
 
-# 200mob?
-# 199 * 200 = 200**2 = 40_000
+# 200mob
+# ?
 
 # 1000mob
-# 1000**2 = 1_000_000
+# ?
 
 def check_collisions(mobs):
-    for mob in mobs: #100
+    for mob in mobs:
         mob["collisions"].clear()
+        position = mob["pos"]
 
-        for n, other_mob in enumerate(mobs): #99
+        x_cell = int(position.x // GRIDSIZE)
+        y_cell = int(position.y // GRIDSIZE)
+        cell_mobs = uniform_grid[y_cell][x_cell]
+
+        for other_mob in cell_mobs:
             if mob == other_mob:
                 continue
 
-            rec1 = pgame.Rect(mob["pos"], (MOB_SIZE, MOB_SIZE))
+            rec1 = pgame.Rect(position, (MOB_SIZE, MOB_SIZE))
             rec2 = pgame.Rect(other_mob["pos"], (MOB_SIZE, MOB_SIZE))
             if rec1.colliderect(rec2):
-                mob["collisions"].append(n)
+                mob["collisions"].append(other_mob)
 
 
 # position, velocity
