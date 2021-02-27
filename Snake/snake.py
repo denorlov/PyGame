@@ -60,11 +60,11 @@ def update():
 def draw(screen):
     screen.fill(BLACK_COLOR)
 
-    screen.blit(snake_mid_bottom_right_img, (0, TILE, TILE, TILE))
-    screen.blit(snake_mid_bottom_left_img, (0, 2 * TILE, TILE, TILE))
-
-    screen.blit(snake_mid_top_right_img, (0, 3 * TILE, TILE, TILE))
-    screen.blit(snake_mid_top_left_img, (0, 4 * TILE, TILE, TILE))
+    # screen.blit(snake_mid_bottom_right_img, (0, TILE, TILE, TILE))
+    # screen.blit(snake_mid_bottom_left_img, (0, 2 * TILE, TILE, TILE))
+    #
+    # screen.blit(snake_mid_top_right_img, (0, 3 * TILE, TILE, TILE))
+    # screen.blit(snake_mid_top_left_img, (0, 4 * TILE, TILE, TILE))
 
     for i in range(len(snake)):
         x,y = snake[i]

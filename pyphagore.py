@@ -1,5 +1,4 @@
 import math, sys, pygame
-from PIL import ImageColor
 
 size = width, height = 1024, 780
 
