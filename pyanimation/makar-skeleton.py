@@ -1,20 +1,20 @@
-import pyanimation
 import pygame
+from pyanimation import Animation
 
 pygame.init()
 
 FPS = 60
+from_left_to_right = True
 
-screen = pygame.display.set_mode((640, 480))
+screen = pygame.display.set_mode((1500, 800))
 clock = pygame.time.Clock()
 
-girl = pyanimation.Animation("images/spritesheet.png")
-girl.create_animation(0, 0, 125, 125, "run", duration=80)
-girl.run("run")
-girl.x = screen.get_width() // 2
+sans = Animation("images/sprite_update.png")
+sans.create_animation(965, 650, 185, 315, "run", duration=200, cols=4, rows=1)
+sans.run("run")
+
 
 is_running = True
-from_left_to_right = True
 while is_running:
     clock.tick(FPS)
 
@@ -31,15 +31,16 @@ while is_running:
                 from_left_to_right = False
 
     if from_left_to_right:
-        girl.facing_right = False
-        girl.x = girl.x + 4
+        sans.facing_right = False
+        sans.x = sans.x + 4
     else:
-        girl.facing_right = True
-        girl.x = girl.x - 4
+        sans.facing_right = True
+        sans.x = sans.x - 4
 
     screen.fill((255, 255, 255))
-    girl_surface = girl.update_surface()
-    screen.blit(girl_surface, (girl.x, girl.y))
+    sans_surface = sans.update_surface()
+    screen.blit(sans_surface, (sans.x, sans.y))
     pygame.display.flip()
+    sans.x += 1
 
 pygame.quit()

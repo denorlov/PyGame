@@ -12,7 +12,7 @@ filled_surface.fill(pygame.Color("#D9B990"))
 clock = pygame.time.Clock()
 
 among_us = Animation("images/among_us_sprite_sheet.jpg")
-among_us.create_animation(10, 15, 125, 125, "run", duration=80, cols=1, rows=5)
+among_us.create_animation(10, 15, 125, 125, "run", duration=75, cols=1, rows=5)
 among_us.run("run")
 among_us.x = 0
 
