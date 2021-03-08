@@ -10,7 +10,11 @@ screen = pygame.display.set_mode((1500, 800))
 clock = pygame.time.Clock()
 
 sans = Animation("images/sprite_update.png")
-sans.create_animation(965, 650, 185, 315, "run", duration=200, cols=4, rows=1)
+
+# sprite->170*300
+# 980, 660
+
+sans.create_animation(980 - 10, 660, 170 + 20, 300, "run", duration=200, cols=4, rows=1)
 sans.run("run")
 
 

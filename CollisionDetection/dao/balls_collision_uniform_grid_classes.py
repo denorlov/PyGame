@@ -36,13 +36,36 @@ def draw_text(text, size, color, x, y):
     text_rect.topleft = (x, y)
     screen.blit(text_surface, text_rect)
 
-def draw_grid():
-    for x in range(0, WIDTH, GRIDSIZE):
-        pgame.draw.line(screen, LIGHTGREY, (x, 0), (x, HEIGHT))
-    for y in range(0, HEIGHT, GRIDSIZE):
-        pgame.draw.line(screen, LIGHTGREY, (0, y), (WIDTH, y))
+class UniformGrid:
+    def __init__(self, screen_width, screen_height, cell_size):
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.cell_size = cell_size
+        self.clear()
 
-uniform_grid = []
+    def clear(self):
+        y_cells = int(self.screen_width / self.cell_size) + 1
+        x_cells = int(self.screen_height / self.cell_size) + 1
+        self.grid = [[[]] * y_cells for _ in range(x_cells)]
+
+    def add_mob(self, mob):
+        x_cell = int(mob.position.x / self.cell_size)
+        y_cell = int(mob.position.y / self.cell_size)
+        self.grid[y_cell][x_cell].append(mob)
+
+    def get_mobs(self, mob):
+        x_cell = int(mob.position.x / self.cell_size)
+        y_cell = int(mob.position.y / self.cell_size)
+        return self.grid[y_cell][x_cell]
+
+    def draw(self):
+        for x in range(0, self.screen_width, self.cell_size):
+            pgame.draw.line(screen, LIGHTGREY, (x, 0), (x, self.screen_height))
+        for y in range(0, self.screen_height, self.cell_size):
+            pgame.draw.line(screen, LIGHTGREY, (0, y), (self.screen_width, y))
+
+
+uniform_grid = UniformGrid(WIDTH, HEIGHT, GRIDSIZE)
 
 class Mob:
     def __init__(self, position, velocity):
@@ -54,7 +77,7 @@ class Mob:
         color = RED if self.collisions else GREEN
         pgame.draw.rect(screen, color, (self.position, (MOB_SIZE, MOB_SIZE)), 2)
 
-    def update(self):
+    def update_position(self):
         new_position = self.position + self.velocity
 
         new_velocity = self.velocity
@@ -72,14 +95,11 @@ class Mob:
 def update_mobs(mobs):
     global uniform_grid
 
-    uniform_grid = [[[]] * (WIDTH // GRIDSIZE + 1) for i in range(HEIGHT // GRIDSIZE + 1)]
+    uniform_grid.clear()
 
     for mob in mobs:
-        mob.update()
-
-        x_cell = int(mob.position.x // GRIDSIZE)
-        y_cell = int(mob.position.y // GRIDSIZE)
-        uniform_grid[y_cell][x_cell].append(mob)
+        mob.update_position()
+        uniform_grid.add_mob(mob)
 
 # про оценку сложности uniform grid
 #
@@ -97,9 +117,7 @@ def check_collisions(mobs):
         mob.collisions.clear()
         position = mob.position
 
-        x_cell = int(position.x // GRIDSIZE)
-        y_cell = int(position.y // GRIDSIZE)
-        cell_mobs = uniform_grid[y_cell][x_cell]
+        cell_mobs = uniform_grid.get_mobs(mob)
 
         for other_mob in cell_mobs:
             if mob == other_mob:
@@ -136,7 +154,7 @@ while running:
 
     # Draw / render
     screen.fill(BLACK)
-    draw_grid()
+    uniform_grid.draw()
     for mob in mobs:
         mob.draw(screen)
     draw_text(f"fps: {int(clock.get_fps())}", 24, WHITE, 5, 5)

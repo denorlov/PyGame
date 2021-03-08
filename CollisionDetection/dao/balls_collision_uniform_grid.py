@@ -6,7 +6,7 @@ vec = pgame.math.Vector2
 WIDTH = 1280
 HEIGHT = 720
 
-GRIDSIZE = 32 // 8
+GRIDSIZE = 32
 
 FPS = 60
 
