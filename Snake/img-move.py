@@ -15,7 +15,7 @@ pygame.init()
 pygame.display.set_caption("Заставка")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
-intro_image = pygame.image.load("Images/python_intro_img.jpg")
+intro_image = pygame.image.load("images/python_intro_img.jpg")
 start_x = -intro_image.get_width()
 speed = 25 # pixels per sec
 

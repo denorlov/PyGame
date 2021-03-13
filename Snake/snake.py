@@ -51,7 +51,7 @@ class Rabbit:
         self.x = x
         self.y = y
 
-        self.animations = pyanimation.Animation("rabbit.png")
+        self.animations = pyanimation.Animation("images/rabbit.png")
         self.animations.sprite_sheet.set_colorkey(pygame.color.Color("#78C380"))
 
         self.animations.create_animation(0, 6, RABBIT_TILE, RABBIT_TILE, "1", duration=80, cols=3, rows=1)

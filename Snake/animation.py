@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 screen = pygame.display.set_mode((800, 480))
 
-spritesheet = pygame.image.load("rabbit.png")
+spritesheet = pygame.image.load("images/rabbit.png")
 #spritesheet.convert()  # convert only works after display_setmode is set.
 
 background = pygame.Surface((screen.get_size()))

@@ -19,7 +19,7 @@ pygame.init()
 
 pygame.display.set_caption("Картинка")
 
-image = pygame.image.load("Images/python_intro_img.jpg")
+image = pygame.image.load("images/python_intro_img.jpg")
 
 
 screen_size = (width, height) = (image.get_width(), image.get_height())
