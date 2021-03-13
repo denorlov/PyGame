@@ -1,5 +1,5 @@
 from Snake.sprites.rabbit import Rabbit
-from sprite_imgs import *
+from snake_imgs import *
 from random import randint
 
 import pygame as pygame
