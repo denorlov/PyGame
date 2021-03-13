@@ -1,5 +1,4 @@
-import pyanimation
-
+from Snake.sprites.rabbit import Rabbit
 from sprite_imgs import *
 from random import randint
 
@@ -34,6 +33,7 @@ cycletime = 0
 interval = .5  # how long one single images should be displayed in seconds
 animation_phase_num = 0
 
+
 # world state
 
 # list of x, y
@@ -43,55 +43,19 @@ snake = [(1, 1), (1, 2), (1, 3)]
 direction = (0, 1)
 is_in_pause = False
 
-
-RABBIT_TILE = 32
-
-class Rabbit:
-    def __init__(self, x, y, animation_phase_num):
-        self.x = x
-        self.y = y
-
-        self.animation_phase_num = animation_phase_num
-
-        self.animations = pyanimation.Animation("rabbit.png")
-        self.animations.sprite_sheet.set_colorkey(pygame.color.Color("#78C380"))
-
-        self.animations.create_animation(0, 6, RABBIT_TILE, RABBIT_TILE, "1", duration=80, cols=3, rows=1)
-        self.animations.create_animation(0, 6 + RABBIT_TILE, RABBIT_TILE, RABBIT_TILE, "2", duration=80, cols=3, rows=1)
-        self.animations.create_animation(0, 6 + RABBIT_TILE * 2, RABBIT_TILE, RABBIT_TILE, "3", duration=80, cols=3, rows=1)
-        self.animations.create_animation(0, 6 + RABBIT_TILE * 3, RABBIT_TILE, RABBIT_TILE, "4", duration=80, cols=3, rows=1)
-
-        self.animations.run(str(randint(1, 4)))
-
-        self.animations.x = self.x * TILE
-        self.animations.y = self.y * TILE
-
-    def draw(self, screen):
-        bunny_image = self.animations.update_surface()
-        screen.blit(
-            bunny_image,
-            (self.animations.x, self.animations.y, RABBIT_TILE, RABBIT_TILE)
-        )
-
 # list of x, y
-rabbits = [
-    Rabbit(
-        x=randint(0, W_TILES),
-        y=randint(0, H_TILES),
-        animation_phase_num=randint(0, len(bunny_animation_phases))
-    )
-    for _ in range(15)
-]
-
+rabbits = [Rabbit(W_TILES, H_TILES) for _ in range(15)]
 plants = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 crystals = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 rocks = [(randint(0, W_TILES), randint(0, H_TILES)) for _ in range(5)]
 
 def update():
     global snake
-    global apples
 
     if not is_in_pause:
+        for rabbit in rabbits:
+            rabbit.update()
+
         head = (snake[0][0] + direction[0], snake[0][1] + direction[1])
 
         eat = False
@@ -99,13 +63,7 @@ def update():
             # eat apple
             if rabbits[i].x == head[0] and rabbits[i].y == head[1]:
                 del rabbits[i]
-                rabbits.append(
-                    Rabbit(
-                        x=randint(0, W_TILES),
-                        y=randint(0, H_TILES),
-                        animation_phase_num=randint(0, len(bunny_animation_phases))
-                     )
-                )
+                rabbits.append(Rabbit(W_TILES, H_TILES))
                 eat = True
                 break
 
@@ -116,12 +74,6 @@ def update():
 
 def draw(screen):
     screen.fill(BLACK_COLOR)
-
-    # screen.blit(snake_mid_bottom_right_img, (0, TILE, TILE, TILE))
-    # screen.blit(snake_mid_bottom_left_img, (0, 2 * TILE, TILE, TILE))
-    #
-    # screen.blit(snake_mid_top_right_img, (0, 3 * TILE, TILE, TILE))
-    # screen.blit(snake_mid_top_left_img, (0, 4 * TILE, TILE, TILE))
 
     for i in range(len(snake)):
         x,y = snake[i]
@@ -258,12 +210,12 @@ while is_running:
 
     update()
 
-    if cycletime > interval:
-        cycletime = 0
-
-        animation_phase_num += 1
-        if animation_phase_num >= len(bunny_animation_phases):
-            animation_phase_num = 0
+    # if cycletime > interval:
+    #     cycletime = 0
+    #
+    #     animation_phase_num += 1
+    #     if animation_phase_num >= len(bunny_animation_phases):
+    #         animation_phase_num = 0
 
     draw(screen)
     pygame.display.flip()
