@@ -6,7 +6,7 @@ screen = pygame.display.set_mode((800, 480))
 FPS = 60
 clock = pygame.time.Clock()  # create pygame clock object
 
-sprite_sheet = pygame.image.load("images/rabbit.png")
+sprite_sheet = pygame.image.load("../Snake/images/rabbit.png")
 
 TILE = 32
 

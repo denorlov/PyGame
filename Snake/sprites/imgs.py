@@ -2,13 +2,13 @@ import pygame
 
 TILE = 50
 
-bunny_image = pygame.image.load("images/bunny.png")
-plant_img = pygame.image.load("images/plant.png")
-crystal_img = pygame.image.load("images/crystal.png")
-rock_img = pygame.image.load("images/rock.png")
+bunny_image = pygame.image.load("../images/bunny.png")
+plant_img = pygame.image.load("../images/plant.png")
+crystal_img = pygame.image.load("../images/crystal.png")
+rock_img = pygame.image.load("../images/rock.png")
 
 
-snake_img = pygame.image.load("images/snake-graphics.png")
+snake_img = pygame.image.load("../images/snake-graphics.png")
 
 snake_head_up_img = snake_img.subsurface((64 * 3, 0, 64, 64))
 snake_head_up_img = pygame.transform.scale(snake_head_up_img, (TILE, TILE))

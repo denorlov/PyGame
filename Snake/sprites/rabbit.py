@@ -17,7 +17,7 @@ class Rabbit:
         self.dy = 0
         self.sit_on_same_place = True
 
-        self.animations = pyanimation.Animation("rabbit.png")
+        self.animations = pyanimation.Animation("images/rabbit.png")
         self.animations.sprite_sheet.set_colorkey("#78C380")
         self.animations.sprite_sheet.convert()
         self.animations.create_animation(0, 6, RABBIT_TILE, RABBIT_TILE, "down", duration=80, cols=3, rows=1)
