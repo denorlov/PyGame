@@ -1,7 +1,7 @@
 import pygame as pygame
 
-from LR.spritesheet import SpriteSheet
-from LR.tilemap import TileMap
+from LR.spritesheet import Spritesheet
+from LR.tilemap import Tilemap
 
 BLACK_COLOR = pygame.Color('black')
 WHITE_COLOR = pygame.Color('white')
@@ -15,7 +15,6 @@ SCREEN_SIZE = WIDTH, HEIGHT = 800, 600
 
 pygame.init()
 pygame.display.set_caption("Test")
-#screen = pygame.display.set_mode(SCREEN_SIZE, flags=pygame.FULLSCREEN)
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 clock = pygame.time.Clock()
@@ -38,8 +37,12 @@ map = [
 [220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220,220]
 ]
 
-spritesheet = SpriteSheet("tileset3b.png", 24, 24, pygame.Color(255, 0, 255))
-tilemap = TileMap(spritesheet, map)
+spritesheet = Spritesheet(
+    "assets/tileset3b.png",
+    tile_width=24, tile_height=24,
+    colorkey=pygame.Color(255, 0, 255)
+)
+tilemap = Tilemap(spritesheet, map)
 
 is_running = True
 while is_running:
@@ -50,6 +53,7 @@ while is_running:
     x = (screen.get_width() - tilemap.get_width()) // 2
     y = (screen.get_height() - tilemap.get_height()) // 2
 
+    screen.fill((0, 0, 255))
     screen.blit(tilemap.surface, (x, y))
     pygame.display.flip()
     clock.tick(60)
