@@ -11,7 +11,7 @@ GRIDSIZE = 32
 FPS = 60
 
 MOB_SIZE = 10
-NUM_MOBS = 600
+NUM_MOBS = 1000
 
 # define colors
 WHITE = (255, 255, 255)
@@ -44,9 +44,9 @@ class UniformGrid:
         self.clear()
 
     def clear(self):
-        x_cells = int(self.screen_width / self.cell_size) + 1
-        y_cells = int(self.screen_height / self.cell_size) + 1
-        self.grid = [[[]] * x_cells for _ in range(y_cells)]
+        y_cells = int(self.screen_width / self.cell_size) + 1
+        x_cells = int(self.screen_height / self.cell_size) + 1
+        self.grid = [[None] * y_cells for _ in range(x_cells)]
 
     def add_mob(self, mob):
         x_cell = int(mob.position.x / self.cell_size)
@@ -63,14 +63,37 @@ class UniformGrid:
         y_cell = int(mob.position.y / self.cell_size)
         return self.grid[y_cell][x_cell]
 
-    def draw(self):
-        for x in range(0, self.screen_width, self.cell_size):
-            pgame.draw.line(screen, LIGHTGREY, (x, 0), (x, self.screen_height))
-        for y in range(0, self.screen_height, self.cell_size):
-            pgame.draw.line(screen, LIGHTGREY, (0, y), (self.screen_width, y))
+
+class SpatialHash:
+    def __init__(self, cell_size):
+        self.cell_size = cell_size
+        self.idx_to_mobs = {}
+
+    def clear(self):
+        #print(self.idx_to_mobs)
+        self.idx_to_mobs.clear()
+
+    def add_mob(self, mob):
+        h = self.get_hash(mob)
+        if h in self.idx_to_mobs:
+            self.idx_to_mobs[h].append(mob)
+        else:
+            self.idx_to_mobs[h] = [mob]
+
+    def get_mobs(self, mob):
+        return self.idx_to_mobs[self.get_hash(mob)]
+
+    def get_hash(self, mob):
+        x_cell = int(mob.position.x / self.cell_size)
+        y_cell = int(mob.position.y / self.cell_size)
+        res =  y_cell * 1000 + x_cell
+        #print(f"{mob} -> {res}")
+        return res
 
 
-uniform_grid = UniformGrid(WIDTH, HEIGHT, GRIDSIZE)
+
+#index = SpatialHash(GRIDSIZE)
+index = UniformGrid(WIDTH, HEIGHT, GRIDSIZE)
 
 class Mob:
     def __init__(self, position, velocity):
@@ -96,15 +119,22 @@ class Mob:
         self.velocity = new_velocity
         self.position = new_position
 
+    def __repr__(self):
+        return f"{self.position}, {self.collisions}"
+
+    def __str__(self):
+        return f"{self.position}, {self.collisions}"
+
+
 
 def update_mobs(mobs):
-    global uniform_grid
+    global index
 
-    uniform_grid.clear()
+    index.clear()
 
     for mob in mobs:
         mob.update_position()
-        uniform_grid.add_mob(mob)
+        index.add_mob(mob)
 
 # про оценку сложности uniform grid
 #
@@ -122,7 +152,7 @@ def check_collisions(mobs):
         mob.collisions.clear()
         position = mob.position
 
-        cell_mobs = uniform_grid.get_mobs(mob)
+        cell_mobs = index.get_mobs(mob)
 
         for other_mob in cell_mobs:
             if mob == other_mob:
@@ -159,11 +189,18 @@ while running:
 
     # Draw / render
     screen.fill(BLACK)
-    uniform_grid.draw()
+
+    for x in range(0, WIDTH, GRIDSIZE):
+        pgame.draw.line(screen, LIGHTGREY, (x, 0), (x, HEIGHT))
+    for y in range(0, HEIGHT, GRIDSIZE):
+        pgame.draw.line(screen, LIGHTGREY, (0, y), (WIDTH, y))
+
     for mob in mobs:
         mob.draw(screen)
+
     draw_text(f"fps: {int(clock.get_fps())}", 24, WHITE, 5, 5)
     draw_text(f"mobs: {len(mobs)}", 24, WHITE, 5, 22)
+
     pgame.display.flip()
 
 pgame.quit()

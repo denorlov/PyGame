@@ -4,17 +4,16 @@ class Spritesheet(object):
     def __init__(self, filename, tile_width, tile_height, colorkey = None):
         self.filename = filename
         self.sheet = pygame.image.load(filename)
+        self.colorkey = colorkey
         if colorkey is not None:
             if colorkey == -1:
                 colorkey = self.sheet.get_at((0,0))
-            self.sheet.set_colorkey(colorkey, pygame.RLEACCEL)
-        self.sheet.convert()
+            self.sheet.set_colorkey(colorkey)
+        self.sheet = self.sheet.convert()
 
         self.tile_width = tile_width
         self.tile_height = tile_height
 
-    def __getitem__(self, item):
-        return self.image_at(item)
 
     def __getitem__(self, index):
         if isinstance(index, tuple):
@@ -27,7 +26,7 @@ class Spritesheet(object):
             return self.image_at(tile_col, tile_row)
 
     def image_at(self, tile_col, tile_row):
-        "Loads image from tile_x_y_pair position"
+        "Loads image from tile_col and tile_row tile"
         rect = pygame.Rect(
             tile_col * self.tile_width,
             tile_row * self.tile_height,
@@ -35,10 +34,13 @@ class Spritesheet(object):
             self.tile_height
         )
         image = pygame.Surface(rect.size)
+        image.set_colorkey(self.colorkey)
         image.blit(self.sheet, (0, 0), rect)
-        image.set_colorkey(self.sheet.get_colorkey())
-        image = image.convert()
         return image
+
+    def __getitem__(self, tile_col_row):
+        tile_col, tile_row = tile_col_row
+        return self.image_at(tile_col, tile_row)
 
     def __str__(self):
         return f"{self.tile_width} * {self.tile_height}"

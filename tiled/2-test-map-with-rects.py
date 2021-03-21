@@ -1,7 +1,7 @@
 import pygame as pygame
 
-from LR.spritesheet import Spritesheet
-from LR.tilemap import Tilemap
+from tiled.spritesheet import Spritesheet
+from tiled.tilemap import Tilemap
 
 BLACK_COLOR = pygame.Color('black')
 WHITE_COLOR = pygame.Color('white')
@@ -13,13 +13,21 @@ RED_COLOR = pygame.Color('red')
 
 SCREEN_SIZE = WIDTH, HEIGHT = 800, 600
 
+def draw_text(text, size, color, x, y):
+    font_name = pygame.font.match_font('hack')
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, color)
+    text_rect = text_surface.get_rect()
+    text_rect.topleft = (x, y)
+    screen.blit(text_surface, text_rect)
+
 pygame.init()
 pygame.display.set_caption("Test")
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 clock = pygame.time.Clock()
 
-map = [
+level1_map = [
 [340,344,344,344,342,342,344,344,-1,342,342,342,340,340,135,343,343,343,343,262],
 [261,158,-1,156,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,135,-1,-1,-1,-1,262],
 [225,225,225,225,225,152,112,112,112,112,112,112,112,112,135,156,-1,-1,-1,262],
@@ -42,7 +50,6 @@ spritesheet = Spritesheet(
     tile_width=24, tile_height=24,
     colorkey=pygame.Color(255, 0, 255)
 )
-tilemap = Tilemap(spritesheet, map)
 
 is_running = True
 while is_running:
@@ -50,11 +57,32 @@ while is_running:
         if event.type == pygame.QUIT:
             is_running = False
 
-    x = (screen.get_width() - tilemap.get_width()) // 2
-    y = (screen.get_height() - tilemap.get_height()) // 2
-
     screen.fill((0, 0, 255))
-    screen.blit(tilemap.surface, (x, y))
+
+    screen.blit(spritesheet.image_at(tile_col=8, tile_row=11), (0, 400))
+    screen.blit(spritesheet.image_at(tile_col=9, tile_row=11), (100, 400))
+    screen.blit(spritesheet.image_at(tile_col=10, tile_row=11), (200, 400))
+
+    for c, row in enumerate(level1_map):
+        for r, item_code in enumerate(row):
+            if item_code != -1:
+                rect = pygame.Rect(
+                    r * spritesheet.tile_width,
+                    c * spritesheet.tile_height,
+                    spritesheet.tile_width,
+                    spritesheet.tile_height
+                )
+
+                pygame.draw.rect(screen, GREEN_COLOR, rect, 2)
+
+                draw_text(
+                    text=f"{item_code}",
+                    size=18,
+                    color=GREEN_COLOR,
+                    x=r*spritesheet.tile_width + 2,
+                    y=c*spritesheet.tile_height + 2
+                )
+
     pygame.display.flip()
     clock.tick(60)
 
