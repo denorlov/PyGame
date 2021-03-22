@@ -34,9 +34,9 @@ while is_running:
 
     screen.fill((0, 0, 255))
 
-    screen.blit(spritesheet.image_at(tile_col=8, tile_row=11), (0, 0))
-    screen.blit(spritesheet.image_at(tile_col=9, tile_row=11), (100, 0))
-    screen.blit(spritesheet.image_at(tile_col=10, tile_row=11), (200, 0))
+    spritesheet.blit_tile(screen, tile_col=8, tile_row=11, x=0, y=0)
+    spritesheet.blit_tile(screen, tile_col=9, tile_row=11, x=100, y=0)
+    spritesheet.blit_tile(screen, tile_col=10, tile_row=11, x=200, y=0)
 
     pygame.display.flip()
     clock.tick(60)

@@ -5,10 +5,6 @@ class Spritesheet(object):
         self.filename = filename
         self.sheet = pygame.image.load(filename)
         self.colorkey = colorkey
-        if colorkey is not None:
-            if colorkey == -1:
-                colorkey = self.sheet.get_at((0,0))
-            self.sheet.set_colorkey(colorkey)
         self.sheet = self.sheet.convert()
 
         self.tile_width = tile_width
@@ -34,9 +30,22 @@ class Spritesheet(object):
             self.tile_height
         )
         image = pygame.Surface(rect.size)
+        if self.colorkey != None:
+            image.set_colorkey(self.colorkey)
         image.set_colorkey(self.colorkey)
         image.blit(self.sheet, (0, 0), rect)
         return image
+
+    def blit_tile(self, surface, tile_col, tile_row, x, y):
+        "Loads image from tile_col and tile_row tile"
+        rect = pygame.Rect(
+            tile_col * self.tile_width,
+            tile_row * self.tile_height,
+            self.tile_width,
+            self.tile_height
+        )
+        surface.blit(self.sheet, (x, y), rect)
+
 
     def __getitem__(self, tile_col_row):
         tile_col, tile_row = tile_col_row
