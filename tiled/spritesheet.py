@@ -1,7 +1,7 @@
 import pygame
 
 class Spritesheet(object):
-    def __init__(self, filename, tile_width, tile_height, colorkey = None):
+    def __init__(self, filename, tile_width, tile_height, colorkey=None):
         self.filename = filename
         self.sheet = pygame.image.load(filename)
         self.colorkey = colorkey
@@ -9,17 +9,6 @@ class Spritesheet(object):
 
         self.tile_width = tile_width
         self.tile_height = tile_height
-
-
-    def __getitem__(self, index):
-        if isinstance(index, tuple):
-            tile_col, tile_row = index
-            return self.image_at(tile_col, tile_row)
-        else:
-            cols = self.sheet.get_width() // self.tile_width
-            tile_col = index % cols
-            tile_row = index // cols
-            return self.image_at(tile_col, tile_row)
 
     def image_at(self, tile_col, tile_row):
         "Loads image from tile_col and tile_row tile"
@@ -44,11 +33,11 @@ class Spritesheet(object):
             self.tile_width,
             self.tile_height
         )
+        if self.colorkey != None:
+            self.sheet.set_colorkey(self.colorkey)
         surface.blit(self.sheet, (x, y), rect)
 
-
-    def __getitem__(self, tile_col_row):
-        tile_col, tile_row = tile_col_row
+    def __getitem__(self, tile_col, tile_row):
         return self.image_at(tile_col, tile_row)
 
     def __str__(self):
