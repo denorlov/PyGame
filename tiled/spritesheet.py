@@ -21,7 +21,6 @@ class Spritesheet(object):
         image = pygame.Surface(rect.size)
         if self.colorkey != None:
             image.set_colorkey(self.colorkey)
-        image.set_colorkey(self.colorkey)
         image.blit(self.sheet, (0, 0), rect)
         return image
 
@@ -37,7 +36,8 @@ class Spritesheet(object):
             self.sheet.set_colorkey(self.colorkey)
         surface.blit(self.sheet, (x, y), rect)
 
-    def __getitem__(self, tile_col, tile_row):
+    def __getitem__(self, tile_coords):
+        tile_col, tile_row = tile_coords
         return self.image_at(tile_col, tile_row)
 
     def __str__(self):

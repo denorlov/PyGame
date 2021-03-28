@@ -30,7 +30,7 @@ screen = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 
 level1_map = []
-with open("assets/2.csv") as f:
+with open("assets/4.csv") as f:
     reader = csv.reader(f, delimiter=',', quotechar='"')
     for row in reader:
         ints_row = [int(i) for i in row]
@@ -65,13 +65,13 @@ while is_running:
                 tile_img = spritesheet.image_at(tile_col=tile_col, tile_row=tile_row)
                 screen.blit(tile_img, rect.topleft)
 
-                draw_text(
-                    text=f"{item_code}",
-                    size=18,
-                    color=GREEN_COLOR,
-                    x=r*spritesheet.tile_width + 2,
-                    y=c*spritesheet.tile_height + 2
-                )
+                # draw_text(
+                #     text=f"{item_code}",
+                #     size=18,
+                #     color=GREEN_COLOR,
+                #     x=r*spritesheet.tile_width + 2,
+                #     y=c*spritesheet.tile_height + 2
+                # )
 
     pygame.display.flip()
     clock.tick(60)

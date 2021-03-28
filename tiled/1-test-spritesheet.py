@@ -11,6 +11,8 @@ DARK_GREEN_COLOR = pygame.Color('forestgreen')
 GREEN_COLOR = pygame.Color('green')
 RED_COLOR = pygame.Color('red')
 
+color_key = (255, 0, 255)
+
 SCREEN_SIZE = WIDTH, HEIGHT = 800, 600
 
 pygame.init()
