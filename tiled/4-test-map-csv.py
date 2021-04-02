@@ -25,7 +25,8 @@ def draw_text(text, size, color, x, y):
 
 pygame.init()
 pygame.display.set_caption("Test")
-screen = pygame.display.set_mode(SCREEN_SIZE)
+#screen = pygame.display.set_mode(SCREEN_SIZE)
+screen = pygame.display.set_mode(SCREEN_SIZE, flags=pygame.FULLSCREEN)
 
 clock = pygame.time.Clock()
 
@@ -47,6 +48,9 @@ while is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                is_running = False
 
     #screen.fill((0, 0, 255))
 
