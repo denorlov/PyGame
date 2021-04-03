@@ -31,7 +31,7 @@ screen = pygame.display.set_mode(SCREEN_SIZE, flags=pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 
 level1_map = []
-with open("assets/4.csv") as f:
+with open("assets/5.csv") as f:
     reader = csv.reader(f, delimiter=',', quotechar='"')
     for row in reader:
         ints_row = [int(i) for i in row]
@@ -43,6 +43,9 @@ spritesheet = Spritesheet(
     colorkey=pygame.Color(255, 0, 255)
 )
 
+start_x = (screen.get_width() - len(level1_map[0]) * 24) // 2
+start_y = (screen.get_height() - len(level1_map) * 24) // 2
+
 is_running = True
 while is_running:
     for event in pygame.event.get():
@@ -52,30 +55,22 @@ while is_running:
             if event.key == pygame.K_ESCAPE:
                 is_running = False
 
-    #screen.fill((0, 0, 255))
-
     for c, row in enumerate(level1_map):
         for r, item_code in enumerate(row):
             if item_code != -1:
                 rect = pygame.Rect(
-                    r * spritesheet.tile_width,
-                    c * spritesheet.tile_height,
+                    start_x + r * spritesheet.tile_width,
+                    start_x + c * spritesheet.tile_height,
                     spritesheet.tile_width,
                     spritesheet.tile_height
                 )
 
                 tile_col = item_code % 20
                 tile_row = item_code // 20
-                tile_img = spritesheet.image_at(tile_col=tile_col, tile_row=tile_row)
+                tile_img = spritesheet.image_at(
+                    tile_col=tile_col, tile_row=tile_row
+                )
                 screen.blit(tile_img, rect.topleft)
-
-                # draw_text(
-                #     text=f"{item_code}",
-                #     size=18,
-                #     color=GREEN_COLOR,
-                #     x=r*spritesheet.tile_width + 2,
-                #     y=c*spritesheet.tile_height + 2
-                # )
 
     pygame.display.flip()
     clock.tick(60)

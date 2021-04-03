@@ -64,11 +64,7 @@ while is_running:
         if event.type == pygame.QUIT:
             is_running = False
 
-    screen.fill((0, 0, 255))
-
-    screen.blit(spritesheet.image_at(tile_col=8, tile_row=11), (0, 400))
-    screen.blit(spritesheet.image_at(tile_col=9, tile_row=11), (100, 400))
-    screen.blit(spritesheet.image_at(tile_col=10, tile_row=11), (200, 400))
+    screen.fill((0, 0, 0))
 
     for c, row in enumerate(level1_map):
         for r, item_code in enumerate(row):
