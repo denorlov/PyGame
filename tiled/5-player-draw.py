@@ -2,10 +2,43 @@ import csv
 
 from consts import *
 
-from Player import Player
 from spritesheet import Spritesheet
 
 pygame.display.set_caption("Test")
+
+class Player:
+    def __init__(self, x, y, width, height):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.vx = 0
+        self.vy = 0
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, GREEN_COLOR, self.rect)
+
+    def update(self, events):
+        self.vx = 0
+        self.vy = 0
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RIGHT]:
+            self.vx = 5
+        elif keys[pygame.K_LEFT]:
+            self.vx = -5
+
+        if keys[pygame.K_UP]:
+            self.vy = -5
+        elif keys[pygame.K_DOWN]:
+            self.vy = 5
+
+        self.rect.x = self.rect.x + self.vx
+        self.rect.y = self.rect.y + self.vy
+
+    def __str__(self):
+        return self.__repr__()
+
+    def __repr__(self):
+        return f"Player({self.x}, {self.y}, {self.dx}, {self.dy})"
+
 
 def draw_text(text, size, color, x, y):
     font_name = pygame.font.match_font('hack')

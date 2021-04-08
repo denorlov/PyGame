@@ -15,29 +15,29 @@ player_anim.create_animation(
 class Player:
     def __init__(self, x, y, widht, height):
         self.rect = pygame.Rect(x, y, widht, height)
-        self.dx = 0
-        self.dy = 0
+        self.vx = 0
+        self.vy = 0
 
     def draw(self, screen):
         pygame.draw.rect(screen, GREEN_COLOR, self.rect)
 
     def update(self, events):
-        self.dx = 0
-        self.dy = 0
+        self.vx = 0
+        self.vy = 0
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
-            self.dx = 5
+            self.vx = 5
         elif keys[pygame.K_LEFT]:
-            self.dx = -5
+            self.vx = -5
 
         if keys[pygame.K_UP]:
-            self.dy = -5
+            self.vy = -5
         elif keys[pygame.K_DOWN]:
-            self.dy = 5
+            self.vy = 5
 
-        self.rect.x = self.rect.x + self.dx
-        self.rect.y = self.rect.y + self.dy
+        self.rect.x = self.rect.x + self.vx
+        self.rect.y = self.rect.y + self.vy
 
     def __str__(self):
         return self.__repr__()
