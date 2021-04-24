@@ -51,16 +51,28 @@ spritesheet = Spritesheet(
     colorkey=pygame.Color(255, 0, 255)
 )
 
-code_to_tile = {
-    220:spritesheet.image_at(tile_col=0, tile_row=11),
-    222:spritesheet.image_at(tile_col=2, tile_row=11),
-    223:spritesheet.image_at(tile_col=3, tile_row=11),
-    229:spritesheet.image_at(tile_col=9, tile_row=11)
-}
+class Hero:
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+
+        self.width = width
+        self.height = height
+
+
+    def draw(self):
+        pygame.draw.rect(screen, GREEN_COLOR, (self.x, self.y, self.width, self.height))
+
+    def update(self, events):
+        pass
+
+
+hero = Hero(100, 100, 64, 64)
 
 is_running = True
 while is_running:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             is_running = False
 
@@ -78,10 +90,6 @@ while is_running:
 
                 pygame.draw.rect(screen, GREEN_COLOR, rect, 2)
 
-                if item_code in code_to_tile:
-                    tile_img = code_to_tile[item_code]
-                    screen.blit(tile_img, rect.topleft)
-
                 draw_text(
                     text=f"{item_code}",
                     size=18,
@@ -89,6 +97,9 @@ while is_running:
                     x=r*spritesheet.tile_width + 2,
                     y=c*spritesheet.tile_height + 2
                 )
+
+    hero.update(events)
+    hero.draw()
 
     pygame.display.flip()
     clock.tick(60)

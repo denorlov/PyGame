@@ -118,14 +118,14 @@ def update_mobs(mobs):
 # ?
 
 def check_collisions(mobs):
-    for mob in mobs:
+    for mob in mobs: #1000
         mob.collisions.clear()
         position = mob.position
 
-        cell_mobs = uniform_grid.get_mobs(mob)
+        cell_mobs = uniform_grid.get_mobs(mob) #1000
 
         for other_mob in cell_mobs:
-            if mob == other_mob:
+            if mob == other_mob: # 999
                 continue
 
             rec1 = pgame.Rect(position, (MOB_SIZE, MOB_SIZE))

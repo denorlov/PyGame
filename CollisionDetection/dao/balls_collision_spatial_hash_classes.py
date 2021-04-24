@@ -72,6 +72,8 @@ class SpatialHash:
     def clear(self):
         #print(self.idx_to_mobs)
         self.idx_to_mobs.clear()
+        #self.idx_to_mobs = {}
+
 
     def add_mob(self, mob):
         h = self.get_hash(mob)

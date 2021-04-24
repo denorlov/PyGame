@@ -9,7 +9,7 @@ from spritesheet import Spritesheet
 pygame.display.set_caption("Кузя")
 
 PLAYER_ACCELERATION = 0.2
-PLAYER_FRICTION = -0.01
+PLAYER_FRICTION = 0.01
 
 class Player:
     def __init__(self, x, y, width, height):
@@ -21,8 +21,6 @@ class Player:
         pygame.draw.rect(screen, GREEN_COLOR, self.rect)
 
     def update(self, events):
-        global speed
-
         self.acc = pygame.Vector2(0, 0)
 
         keys = pygame.key.get_pressed()
@@ -36,9 +34,9 @@ class Player:
         #     self.acc.y = -0.2
         # elif keys[pygame.K_DOWN]:
         #     self.acc.y = 0.2
-        self.acc = self.acc + self.vel * PLAYER_FRICTION
+        self.acc = self.acc - self.vel * PLAYER_FRICTION
         self.vel += self.acc
-        self.rect.center = self.rect.center + self.vel + (self.acc / 2)
+        self.rect.center = self.rect.center + self.vel + self.acc / 2
 
         if self.rect.right > start_x + map_width_px:
             self.rect.right = start_x + map_width_px
