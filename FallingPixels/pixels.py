@@ -71,7 +71,7 @@ class Scene:
     def __init__(self, screen, imageSurface):
         self.statics = []
 
-        rect = imageSurface.get_rect()
+        rect = imageSurface.get_bbox()
 
         pa = pygame.PixelArray(imageSurface)
         self.columns = []

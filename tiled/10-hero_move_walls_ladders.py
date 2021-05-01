@@ -14,9 +14,10 @@ DARK_GREEN_COLOR = pygame.Color('forestgreen')
 GREEN_COLOR = pygame.Color('green')
 RED_COLOR = pygame.Color('red')
 
-SCREEN_SIZE = WIDTH, HEIGHT = 1096, 616
+SCREEN_SIZE = WIDTH, HEIGHT = 850, 550
 
-def draw_text(x, y, text, size=16, color=WHITE_COLOR):
+
+def draw_text(x, y, text, size=20, color=WHITE_COLOR):
     font_name = pygame.font.match_font('hack')
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, color)
@@ -32,7 +33,7 @@ screen = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 
 level1_map = []
-with open("assets/5.csv") as f:
+with open("assets/4.csv") as f:
     reader = csv.reader(f, delimiter=',', quotechar='"')
     for row in reader:
         ints_row = [int(i) for i in row]
@@ -47,65 +48,73 @@ spritesheet = Spritesheet(
 start_x = (screen.get_width() - len(level1_map[0]) * 24) // 2
 start_y = (screen.get_height() - len(level1_map) * 24) // 2
 
+
+def collide_with(sprite_rect, level_map):
+    for r, row in enumerate(level_map):
+        for c, item_code in enumerate(row):
+            if item_code != -1:
+                rect = pygame.Rect(
+                    start_x + c * spritesheet.tile_width,
+                    start_y + r * spritesheet.tile_height,
+                    spritesheet.tile_width,
+                    spritesheet.tile_height
+                )
+
+                if sprite_rect.colliderect(rect):
+                    #print(f"sprite:{sprite_rect} collides with: {rect},
+                    # row: {r}, col: {c}, item_code: {item_code}")
+                    return True
+
+    return False
+
+
 class Hero:
     def __init__(self, x, y, width, height):
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(0, 0)
-        self.acceleration = pygame.Vector2(0, 0)
-        self.acceleration_const = pygame.Vector2(0.2, 0.2)
 
         self.width = width
         self.height = height
 
     def draw(self, surface_to_draw):
-        pygame.draw.rect(
-            surface_to_draw,
-            GREEN_COLOR,
-            (self.position.x, self.position.y, self.width, self.height)
-        )
+        collide_with_wall = collide_with(self.get_bbox(self.position), level1_map)
+
+        if collide_with_wall:
+            color = RED_COLOR
+        else:
+            color = GREEN_COLOR
+
+        pygame.draw.rect(surface_to_draw, color, self.get_bbox(), 2)
+
+    def get_bbox(self, position=None): # -> pygame.Rect
+        if position is None:
+            return pygame.Rect(self.position.x, self.position.y, self.width, self.height)
+        else:
+            return pygame.Rect(position.x, position.y, self.width, self.height)
 
     def update(self, events):
-        self.acceleration = pygame.Vector2(0, 0)
-        for e in events:
-            if e.type == pygame.KEYDOWN and e.key == pygame.K_SPACE:
-                print('space pressed')
-                self.acceleration_const.x += 0.4
-                self.acceleration_const.y += 0.4
-            elif e.type == pygame.KEYUP and e.key == pygame.K_SPACE:
-                print('space unpressed')
-                self.acceleration_const.x -= 0.4
-                self.acceleration_const.y -= 0.4
+        acceleration = pygame.Vector2(0, 0.4)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             print('left')
-            self.acceleration.x = -self.acceleration_const.x
+            acceleration.x = -0.1
         if keys[pygame.K_RIGHT]:
             print('right')
-            self.acceleration.x = self.acceleration_const.x
+            acceleration.x = 0.1
 
-        self.acceleration = self.acceleration - self.velocity * 0.01
-        self.velocity = self.velocity + self.acceleration
-        temp_position = self.position + self.velocity + 0.5 * self.acceleration
-
-        is_on_screen = True
-        if temp_position.x < 0:
-            self.position.x = 0
-            self.velocity.x = 0
-            is_on_screen = False
-        if temp_position.y < 0:
-            self.position.y = 0
-            self.velocity.y = 0
-            is_on_screen = False
-        if is_on_screen:
-            self.position = temp_position
+        acceleration.x = acceleration.x - self.velocity.x * 0.05
+        self.velocity = self.velocity + acceleration
+        pos_delta = self.velocity + 0.5 * acceleration
+        self.position += pos_delta
 
     def __str__(self):
         return f"pos: {self.position}, vel: {self.velocity}"
 
 
 map_height_px = len(level1_map) * 24
-hero = Hero(screen.get_width() // 2, start_y + map_height_px - 24 * 2 , 24, 24)
+#hero = Hero(screen.get_width() // 2, start_y + map_height_px - 24 * 2 , 24, 24)
+hero = Hero(screen.get_width() // 2, start_y + 24 * 3, 24, 24)
 
 is_running = True
 while is_running:
@@ -138,7 +147,7 @@ while is_running:
 
     hero.update(events)
     hero.draw(screen)
-    draw_text(0, 0, str(hero))
+    draw_text(1, 1, str(hero))
 
     pygame.display.flip()
     clock.tick(60)
