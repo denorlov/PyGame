@@ -2,6 +2,7 @@ import random
 import sys
 
 import pygame
+from pygame.surface import Surface
 
 SCR_RECT = pygame.Rect(0, 0, 1270, 480)
 FPS = 60
@@ -68,10 +69,10 @@ class Scene:
                     scene.statics.append(cube)
                     del self.cubes[idx]
 
-    def __init__(self, screen, imageSurface):
+    def __init__(self, screen, imageSurface:Surface):
         self.statics = []
 
-        rect = imageSurface.get_bbox()
+        rect = imageSurface.get_rect()
 
         pa = pygame.PixelArray(imageSurface)
         self.columns = []

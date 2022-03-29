@@ -33,7 +33,7 @@ screen = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 
 level1_map = []
-with open("assets/4.csv") as f:
+with open("assets/5.csv") as f:
     reader = csv.reader(f, delimiter=',', quotechar='"')
     for row in reader:
         ints_row = [int(i) for i in row]
