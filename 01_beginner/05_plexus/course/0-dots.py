@@ -16,6 +16,6 @@ def draw():
     for point in points:
         x, y = point
         screen.draw.filled_circle((x,y), radius=2, color=(255, 255, 255))
-        screen.draw.text(f"{x},{y}", (x,y))
+        screen.draw.text(f"x={x},y={y}", (x,y))
 
 pgzrun.go()

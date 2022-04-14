@@ -12,7 +12,8 @@ HEIGHT = 600
 FPS = 60
 
 VELOCITY = 0.8
-MAX_DISTANCE = HEIGHT // 5
+#MAX_DISTANCE = HEIGHT // 5
+MAX_DISTANCE = HEIGHT // 4
 
 is_in_full_screen = False
 

@@ -12,12 +12,18 @@ HEIGHT = 600
 VELOCITY = 0.8
 POINTS = 100
 
-points = [(randint(0, WIDTH), randint(0, HEIGHT)) for i in range(POINTS)]
-VELOCITIES = [(uniform(-VELOCITY, VELOCITY), uniform(-VELOCITY, VELOCITY)) for i in range(POINTS)]
+points = [
+    (randint(0, WIDTH), randint(0, HEIGHT))
+    for i in range(POINTS)
+]
+VELOCITIES = [
+    (uniform(-VELOCITY, VELOCITY), uniform(-VELOCITY, VELOCITY))
+    for i in range(POINTS)
+]
 
 def update():
     for i in range(len(points)):
-        x, y,  = points[i]
+        x, y  = points[i]
         vx, vy = VELOCITIES[i]
         x += vx
         y += vy
