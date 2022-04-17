@@ -46,6 +46,9 @@ def update():
 
     time = time + 1
 
+    if time == round_time_limit - 100:
+        sounds.ticking.play()
+
     # конец раунда по времени
     if time > round_time_limit:
         time = 0
@@ -60,6 +63,7 @@ def update():
 
         if prev_button == None or prev_button != clicked_button:
             score -= 5
+            sounds.fail10.play()
 
         clicked_button = None
         prev_button = None
@@ -91,20 +95,24 @@ def on_mouse_down(pos, button):
                 if color_indx == text_indx:
                     print("They matches, score increase")
                     score += 5
+                    sounds.alert03.play()
                     round_time_limit -= 2
                 else:
                     print("They don't, score decrease")
                     score -= 5
+                    sounds.fail01.play()
 
             elif mouse.RIGHT == clicked_button:
                 print("Right button clicked!")
 
                 if color_indx == text_indx:
                     print("They matches, score decrease")
+                    sounds.fail02.play()
                     score -= 5
                 else:
                     print("They don't, score increase")
                     score += 5
+                    sounds.alert01.play()
                     round_time_limit -= 2
 
 
@@ -120,7 +128,12 @@ def draw():
         elif score > 20:
             alpha = 0.8
 
-        screen.draw.text(f"левая кнопка мыши, если цвета совпадают\nправая кнопка мыши, если не совпадают", fontsize=30, midtop=(WIDTH//2, 5), alpha=alpha)
+        screen.draw.text(
+            f"левая кнопка мыши, если цвета совпадают\nправая кнопка мыши, если не совпадают",
+            fontsize=30,
+            midtop=(WIDTH//2, 5),
+            alpha=alpha
+        )
 
     screen.draw.text("✌", (5, HEIGHT - 69), fontname="notoemoji-661a", fontsize=50)
     screen.draw.text(f"{score}", (67, HEIGHT - 65), fontsize=100)
@@ -165,9 +178,6 @@ def draw():
             screen.draw.text("совпадают? второй клик!", midtop=(WIDTH//2, HEIGHT-45), fontsize=30, color="green")
         else:
             screen.draw.text("разные? второй клик!", midtop=(WIDTH//2, HEIGHT-45), fontsize=30, color="red")
-
-
-
 
 pygame.mouse.set_visible(False)
 pgzrun.go()
