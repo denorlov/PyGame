@@ -28,8 +28,8 @@ while is_running:
             is_running = False
 
     time_delta_ms = clock.get_time()
-    dx = time_delta_ms * speed // 100
-    start_x = start_x + dx
+    r_dcol = time_delta_ms * speed // 100
+    start_x = start_x + r_dcol
 
     if start_x > 0:
         start_x = 0

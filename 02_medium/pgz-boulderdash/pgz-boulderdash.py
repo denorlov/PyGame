@@ -27,7 +27,7 @@ rockford = Actor('rockford-1', center=(60, 100))
 game_state = "game"
 items = []
 gems = 0
-collected = 0
+collected_gems = 0
 
 for r in range(0, 14):
     row = []
@@ -63,18 +63,18 @@ def draw():
         if count % 4 == 0 and count < 100:
             rockford.draw()
 
-    headerText("GEMS : " + str(collected))
-    if gems == collected:
+    headerText("GEMS : " + str(collected_gems))
+    if gems == collected_gems:
         bigTitleText("WIN!")
     elif game_state == "dead":
         bigTitleText("GAME OVER!")
 
 
-mx = my = 0
+r_dcol = r_drow = 0
 
 
 def on_key_up(key):
-    global mx, my
+    global r_dcol, r_drow
 
     if key == keys.LEFT:
         mx = -1
@@ -88,7 +88,7 @@ def on_key_up(key):
 
 
 def update():
-    global mx, my
+    global r_dcol, r_drow
 
     for r in range(13, -1, -1):
         for c in range(19, -1, -1):
@@ -104,7 +104,7 @@ def update():
 
 
 def moveRockford(x, y):
-    global collected
+    global collected_gems
     rx = int((rockford.x - 20) / 40)
     ry = int((rockford.y - 40) / 40)
     if items[ry + y][rx + x] != "rock" and items[ry + y][rx + x] != "wall":

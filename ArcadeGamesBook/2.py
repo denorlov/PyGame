@@ -26,7 +26,7 @@ pygame.draw.circle(ballsurface, (0, 0, 255), (25, 25), 25)  # paint blue circle
 ballsurface = ballsurface.convert_alpha()  # for faster blitting. because transparency, use convert_alpha()
 ballrect = ballsurface.get_rect()
 ballx, bally = 550, 240  # start position for the ball surface (topleft corner)
-dx, dy = 60, 50  # speed of ball surface in pixel per second !
+r_dcol, r_drow = 60, 50  # speed of ball surface in pixel per second !
 
 screen.blit(background, (0, 0))  # blit the background on screen (overwriting all)
 screen.blit(ballsurface,
@@ -86,21 +86,21 @@ while mainloop:
     if paint_big_circles:
         wildPainting()
     # calculate new center of ball (time-based)
-    ballx += dx * seconds  # float, since seconds passed since last frame is a decimal value
-    bally += dy * seconds
+    ballx += r_dcol * seconds  # float, since seconds passed since last frame is a decimal value
+    bally += r_drow * seconds
     # bounce ball if out of screen
     if ballx < 0:
         ballx = 0
-        dx *= -1
+        r_dcol *= -1
     elif ballx + ballrect.width > screenrect.width:
         ballx = screenrect.width - ballrect.width
-        dx *= -1
+        r_dcol *= -1
     if bally < 0:
         bally = 0
-        dy *= -1
+        r_drow *= -1
     elif bally + ballrect.height > screenrect.height:
         bally = screenrect.height - ballrect.height
-        dy *= -1
+        r_drow *= -1
     # paint the ball
     screen.blit(ballsurface, (round(ballx, 0), round(bally, 0)))
     pygame.display.flip()  # flip the screen 30 times a second

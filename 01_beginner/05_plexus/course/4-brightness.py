@@ -55,7 +55,7 @@ def draw():
             brightness = int((MAX_DISTANCE - distance) * 255 / MAX_DISTANCE)
 
             if distance < MAX_DISTANCE:
-                screen.draw.line((x0, y0), (x1, y1), color=(0, brightness, brightness))
+                screen.draw.line((x0, y0), (x1, y1), color=(brightness, brightness, brightness))
 
 
 pgzrun.go()

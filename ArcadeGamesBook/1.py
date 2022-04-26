@@ -23,8 +23,8 @@ pygame.draw.circle(ballsurface, (100,175,81), (25,25),25) # paint blue circle
 ballsurface = ballsurface.convert_alpha()       # if you use tranparent colors you need convert_alpha()
 ballrect = ballsurface.get_rect() # the rectangle of the ball surface, for collision detection
 ballx, bally = 550, 240           # start position of the ball (x,y)
-dx = 10                 # x speed vector of the ball in pixel per frame
-dy = 0                 # y speed vector of the ball in pixel per frame
+r_dcol = 10                 # x speed vector of the ball in pixel per frame
+r_drow = 0                 # y speed vector of the ball in pixel per frame
 # ----------- bouncing ball (drawing) ------
 x1 = 50
 y1 = 200
@@ -45,7 +45,7 @@ while mainloop:
             if event.key == pygame.K_ESCAPE:
                 mainloop = False # user pressed ESC
     pygame.display.set_caption("FPS: %.2f X: %.2f Y: %.2f dx: %.2f dy:"
-                               " %.2f" % (clock.get_fps(), ballx, bally, dx, dy))
+                               " %.2f" % (clock.get_fps(), ballx, bally, r_dcol, r_drow))
     # ----- clean screen ----------
     screen.blit(background, (0,0))     #draw background on screen (overwriting all)
     # ------- bouncing ball (drawing) ---------
@@ -58,14 +58,14 @@ while mainloop:
         dx1 *= -1
     pygame.draw.circle(screen, (255,255,0), (x1,y1), radius1)
     # -------- bouncing ball surface ----------
-    ballx += dx
-    bally += dy
+    ballx += r_dcol
+    bally += r_drow
     if ballx < 0: # bounce ball if out of screen
         ballx = 0
-        dx *= -1
+        r_dcol *= -1
     elif ballx + ballrect.width > screenrect.width:
         ballx = screenrect.width - ballrect.width
-        dx *= -1
+        r_dcol *= -1
     screen.blit(ballsurface, (round(ballx,0), round(bally,0)))
     # ----- pulsating circle -----------
     colour = (random.randint(0,255),random.randint(0,255),random.randint(0,255))

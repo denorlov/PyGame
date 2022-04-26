@@ -116,8 +116,8 @@ while running:
         elif event.type == pygame.MOUSEMOTION:
             mouse_x, mouse_y = event.pos
         elif event.type == pygame.MOUSEBUTTONUP:
-            mx, my = get_mouse_cell()
-            cells[my][mx] = not cells[my][mx]
+            r_dcol, r_drow = get_mouse_cell()
+            cells[r_drow][r_dcol] = not cells[r_drow][r_dcol]
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 play_mode = not play_mode

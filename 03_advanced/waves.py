@@ -14,8 +14,8 @@ while True:
             pygame.quit()
             exit()
     if any(pygame.mouse.get_pressed()):
-        mx, my = mouse_pos = pygame.mouse.get_pos()
-        previous[my-1:my+2, mx-1:mx+2] = 255*2
+        r_dcol, r_drow = mouse_pos = pygame.mouse.get_pos()
+        previous[r_drow - 1:r_drow + 2, r_dcol - 1:r_dcol + 2] = 255 * 2
     current[1:-1, 1:-1] = ((previous[:-2, :-2] + previous[2:,:-2] + previous[:-2,2:] + previous[2:, 2:]) / 2 - current[1:-1, 1:-1]) * DAMPING
     array = current
     array = numpy.clip(array + 0.5, 0, 255)  # Инверсия и ограничение. Можно отключить :)
